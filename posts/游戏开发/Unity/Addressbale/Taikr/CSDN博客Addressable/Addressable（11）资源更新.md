@@ -225,7 +225,7 @@
 
    - 更新前
 
-     ![image-20231124230151241](../2.高级/assets/image-20231124230151241.png)
+     ![image-20231124230151241](/PersonalBlog/images/%e6%b8%b8%e6%88%8f%e5%bc%80%e5%8f%91/Unity/Addressbale/Taikr/CSDN%e5%8d%9a%e5%ae%a2Addressable/Addressable%ef%bc%8811%ef%bc%89%e8%b5%84%e6%ba%90%e6%9b%b4%e6%96%b0/image-20231124230151241.png)
 
    - 选择build-update a preivous build后
 

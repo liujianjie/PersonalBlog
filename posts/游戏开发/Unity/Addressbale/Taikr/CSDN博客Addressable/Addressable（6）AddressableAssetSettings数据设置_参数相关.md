@@ -50,7 +50,7 @@
 
 - Downloads
 
-  ![image-20231030214308082](../assets/image-20231030214308082.png)
+  ![image-20231030214308082](/PersonalBlog/images/%e6%b8%b8%e6%88%8f%e5%bc%80%e5%8f%91/Unity/Addressbale/Taikr/CSDN%e5%8d%9a%e5%ae%a2Addressable/Addressable%ef%bc%886%ef%bc%89AddressableAssetSettings%e6%95%b0%e6%8d%ae%e8%ae%be%e7%bd%ae_%e5%8f%82%e6%95%b0%e7%9b%b8%e5%85%b3/image-20231030214308082.png)
 
   Catalog Download Timeout：等待目录文件下载的时间
 
