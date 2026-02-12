@@ -11,10 +11,14 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+# 加载 System.Web 用于 URL 编码
+Add-Type -AssemblyName System.Web
+
 # 配置
 $baseSourceDir = "F:\0.学习\Note\typorafiles"
 $blogRoot = "G:\workspace\2.workProject\PersonalBlog"
 $postsDir = "$blogRoot\public\posts"
+$imagesDir = "$blogRoot\public\images"
 $postsDataFile = "$blogRoot\src\data\posts.ts"
 
 Write-Host "=====================================" -ForegroundColor Cyan
@@ -97,12 +101,61 @@ foreach ($file in $mdFiles) {
     Write-Host "  📅 修改: $($modifiedTime.ToString('yyyy-MM-dd'))" -ForegroundColor Gray
     Write-Host "  ✅ 使用: $formattedDate (${timeSource}时间)" -ForegroundColor Green
 
-    # 提取图片信息
-    $imagePattern = '!\[.*?\]\((https://raw\.githubusercontent\.com/liujianjie/Image/main/ImgFloder/([^)]+))\)'
-    $matches = [regex]::Matches($content, $imagePattern)
+    # 创建图片目标目录
+    $targetImageDir = Join-Path $imagesDir "$relativePath\$($file.BaseName)"
 
-    if ($matches.Count -gt 0) {
-        Write-Host "  🖼️  图片: $($matches.Count) 张 (GitHub 链接)" -ForegroundColor Yellow
+    # 提取 GitHub 图片
+    $githubImagePattern = '!\[.*?\]\((https://raw\.githubusercontent\.com/liujianjie/Image/main/ImgFloder/([^)]+))\)'
+    $githubMatches = [regex]::Matches($content, $githubImagePattern)
+
+    # 提取本地图片引用（相对路径）
+    $localImagePattern = '!\[.*?\]\((\.\./[^)]+\.(png|jpg|jpeg|gif|webp|svg))\)'
+    $localMatches = [regex]::Matches($content, $localImagePattern)
+
+    $totalImages = $githubMatches.Count + $localMatches.Count
+
+    if ($totalImages -gt 0) {
+        Write-Host "  🖼️  图片: $totalImages 张 (GitHub: $($githubMatches.Count), 本地: $($localMatches.Count))" -ForegroundColor Yellow
+    }
+
+    # 处理本地图片
+    if ($localMatches.Count -gt 0) {
+        New-Item -ItemType Directory -Force -Path $targetImageDir | Out-Null
+
+        $copiedImages = 0
+        foreach ($match in $localMatches) {
+            $relativeImagePath = $match.Groups[1].Value
+            $imageName = Split-Path $relativeImagePath -Leaf
+
+            # 解析相对路径
+            $mdFileDir = $file.DirectoryName
+            $absoluteImagePath = Join-Path $mdFileDir $relativeImagePath
+            $absoluteImagePath = [System.IO.Path]::GetFullPath($absoluteImagePath)
+
+            if (Test-Path $absoluteImagePath) {
+                # 复制图片
+                $targetImagePath = Join-Path $targetImageDir $imageName
+                Copy-Item -Path $absoluteImagePath -Destination $targetImagePath -Force
+                $copiedImages++
+
+                # 替换路径并进行 URL 编码
+                $pathParts = $relativePath.Replace('\', '/').Split('/')
+                $encodedParts = $pathParts | ForEach-Object {
+                    [System.Web.HttpUtility]::UrlEncode($_).Replace('+', '%20')
+                }
+                $encodedRelativePath = $encodedParts -join '/'
+
+                $encodedBaseName = [System.Web.HttpUtility]::UrlEncode($file.BaseName).Replace('+', '%20')
+                $encodedImageName = [System.Web.HttpUtility]::UrlEncode($imageName).Replace('+', '%20')
+
+                $newImagePath = "/PersonalBlog/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
+                $content = $content -replace [regex]::Escape($relativeImagePath), $newImagePath
+            }
+        }
+
+        if ($copiedImages -gt 0) {
+            Write-Host "  ✅ 复制本地图片: $copiedImages 张" -ForegroundColor Green
+        }
     }
 
     # 保存文件

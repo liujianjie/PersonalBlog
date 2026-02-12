@@ -24,7 +24,7 @@
 
 - Window > Asset Management > Addressables > Hosting 
 
-  ![image-20231031130857136](../assets/image-20231031130857136.png)
+  ![image-20231031130857136](/PersonalBlog/images/%e6%b8%b8%e6%88%8f%e5%bc%80%e5%8f%91/Unity/Addressbale/Taikr/CSDN%e5%8d%9a%e5%ae%a2Addressable/Addressable%ef%bc%888%ef%bc%89Addressable%20Hosting%e5%8f%af%e5%af%bb%e5%9d%80%e6%89%98%e7%ae%a1%e7%aa%97%e5%8f%a3%e9%85%8d%e7%bd%ae/image-20231031130857136.png)
 
 ## 知识点三：可寻址托管窗口参数
 
@@ -45,7 +45,7 @@
 
 - 使用
 
-  ![image-20231123002411916](../assets/image-20231123002411916.png)
+  ![image-20231123002411916](/PersonalBlog/images/%e6%b8%b8%e6%88%8f%e5%bc%80%e5%8f%91/Unity/Addressbale/Taikr/CSDN%e5%8d%9a%e5%ae%a2Addressable/Addressable%ef%bc%888%ef%bc%89Addressable%20Hosting%e5%8f%af%e5%af%bb%e5%9d%80%e6%89%98%e7%ae%a1%e7%aa%97%e5%8f%a3%e9%85%8d%e7%bd%ae/image-20231123002411916.png)
 
   给分组选择Remote即可。
 
@@ -53,7 +53,7 @@
 
 Addressable Hosting窗口创建的本地服务器有时候会失效，可以在资料区下载第三方工具 让本机变为一个http服务器 模拟远端加载
 
-![image-20231031131442031](../assets/image-20231031131442031.png)
+![image-20231031131442031](/PersonalBlog/images/%e6%b8%b8%e6%88%8f%e5%bc%80%e5%8f%91/Unity/Addressbale/Taikr/CSDN%e5%8d%9a%e5%ae%a2Addressable/Addressable%ef%bc%888%ef%bc%89Addressable%20Hosting%e5%8f%af%e5%af%bb%e5%9d%80%e6%89%98%e7%ae%a1%e7%aa%97%e5%8f%a3%e9%85%8d%e7%bd%ae/image-20231031131442031.png)
 
 ## 总结
 

@@ -102,8 +102,8 @@ export default function PostDetail() {
   const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
 
   return (
-    <div className="container-custom py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-xl mx-auto">
         {/* 返回按钮 */}
         <button
           onClick={() => navigate(-1)}
@@ -156,7 +156,7 @@ export default function PostDetail() {
           </header>
 
           {/* 文章内容 */}
-          <div className="markdown-body prose prose-lg max-w-none">
+          <div className="markdown-body max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}

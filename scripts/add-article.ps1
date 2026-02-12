@@ -6,6 +6,9 @@ param(
     [string]$SourceMdPath
 )
 
+# 加载 System.Web 用于 URL 编码
+Add-Type -AssemblyName System.Web
+
 # 配置
 $baseSourceDir = "F:\0.学习\Note\typorafiles"
 $blogRoot = "G:\workspace\2.workProject\PersonalBlog"
@@ -59,32 +62,83 @@ New-Item -ItemType Directory -Force -Path $targetImageDir | Out-Null
 # 读取 Markdown 内容
 $content = Get-Content -Path $SourceMdPath -Raw -Encoding UTF8
 
-# 提取所有图片 URL
-$imagePattern = '!\[.*?\]\((https://raw\.githubusercontent\.com/liujianjie/Image/main/ImgFloder/([^)]+))\)'
-$matches = [regex]::Matches($content, $imagePattern)
+# 创建图片目标目录
+$targetImageDir = Join-Path $imagesDir "$relativePath\$fileBaseName"
 
-if ($matches.Count -gt 0) {
-    Write-Host "🖼️  发现 $($matches.Count) 张图片" -ForegroundColor Yellow
+# 提取 GitHub 图片
+$githubImagePattern = '!\[.*?\]\((https://raw\.githubusercontent\.com/liujianjie/Image/main/ImgFloder/([^)]+))\)'
+$githubMatches = [regex]::Matches($content, $githubImagePattern)
 
-    # 提取唯一的图片文件名
-    $imageFiles = @()
-    foreach ($match in $matches) {
-        $imageName = $match.Groups[2].Value
-        if ($imageFiles -notcontains $imageName) {
-            $imageFiles += $imageName
+# 提取本地图片引用（相对路径）
+$localImagePattern = '!\[.*?\]\((\.\./[^)]+\.(png|jpg|jpeg|gif|webp|svg))\)'
+$localMatches = [regex]::Matches($content, $localImagePattern)
+
+$totalImages = $githubMatches.Count + $localMatches.Count
+
+if ($totalImages -gt 0) {
+    Write-Host "🖼️  发现 $totalImages 张图片 (GitHub: $($githubMatches.Count), 本地: $($localMatches.Count))" -ForegroundColor Yellow
+}
+
+# 处理本地图片
+if ($localMatches.Count -gt 0) {
+    Write-Host ""
+    Write-Host "📁 处理本地图片..." -ForegroundColor Cyan
+
+    # 创建图片目录
+    New-Item -ItemType Directory -Force -Path $targetImageDir | Out-Null
+
+    $copiedImages = 0
+    $failedImages = 0
+
+    foreach ($match in $localMatches) {
+        $relativeImagePath = $match.Groups[1].Value
+        $imageName = Split-Path $relativeImagePath -Leaf
+
+        # 解析相对路径，获取图片的绝对路径
+        $mdFileDir = $sourceFile.DirectoryName
+        $absoluteImagePath = Join-Path $mdFileDir $relativeImagePath
+        $absoluteImagePath = [System.IO.Path]::GetFullPath($absoluteImagePath)
+
+        if (Test-Path $absoluteImagePath) {
+            # 复制图片到目标目录
+            $targetImagePath = Join-Path $targetImageDir $imageName
+            Copy-Item -Path $absoluteImagePath -Destination $targetImagePath -Force
+
+            Write-Host "  ✅ $imageName" -ForegroundColor Green
+            $copiedImages++
+
+            # 替换 MD 中的图片路径并进行 URL 编码
+            $pathParts = $relativePath.Replace('\', '/').Split('/')
+            $encodedParts = $pathParts | ForEach-Object {
+                [System.Web.HttpUtility]::UrlEncode($_).Replace('+', '%20')
+            }
+            $encodedRelativePath = $encodedParts -join '/'
+
+            $encodedBaseName = [System.Web.HttpUtility]::UrlEncode($fileBaseName).Replace('+', '%20')
+            $encodedImageName = [System.Web.HttpUtility]::UrlEncode($imageName).Replace('+', '%20')
+
+            $newImagePath = "/PersonalBlog/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
+            $content = $content -replace [regex]::Escape($relativeImagePath), $newImagePath
+        } else {
+            Write-Host "  ❌ 未找到: $imageName" -ForegroundColor Red
+            Write-Host "     期望位置: $absoluteImagePath" -ForegroundColor DarkGray
+            $failedImages++
         }
     }
 
     Write-Host ""
-    Write-Host "图片列表:" -ForegroundColor Cyan
-    foreach ($img in $imageFiles) {
-        Write-Host "  - $img" -ForegroundColor Gray
+    if ($copiedImages -gt 0) {
+        Write-Host "✅ 成功复制 $copiedImages 张本地图片" -ForegroundColor Green
     }
-    Write-Host ""
-    Write-Host "✅ 图片仓库是 public 的，直接使用 GitHub 链接，无需下载！" -ForegroundColor Green
-    Write-Host "   链接格式: https://raw.githubusercontent.com/liujianjie/Image/main/ImgFloder/" -ForegroundColor Gray
+    if ($failedImages -gt 0) {
+        Write-Host "⚠️  $failedImages 张图片未找到" -ForegroundColor Yellow
+    }
+}
 
-    # public 仓库不需要替换图片路径，保持原样
+# GitHub 图片保持原样
+if ($githubMatches.Count -gt 0) {
+    Write-Host ""
+    Write-Host "✅ $($githubMatches.Count) 张 GitHub 图片保持原链接" -ForegroundColor Green
 }
 
 # 移除 [toc] 标签（GitHub Pages 不支持）

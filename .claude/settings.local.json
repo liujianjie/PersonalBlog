@@ -9,7 +9,9 @@
       "Bash(npm run deploy)",
       "Bash(powershell -Command \"\\(Get-Item ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable\\\\Addressable（1）导入Addressable.md''\\).CreationTime.ToString\\(''yyyy-MM-dd HH:mm:ss''\\)\")",
       "Bash(powershell -Command \"$file = Get-Item ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable\\\\Addressable（1）导入Addressable.md''; $file.CreationTime; $file.LastWriteTime\")",
-      "Bash(powershell -Command \"& ''.\\\\scripts\\\\batch-add-articles.ps1'' -SourceDir ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable'' -ExcludeFiles ''Addressable（1）导入Addressable.md''\")"
+      "Bash(powershell -Command \"& ''.\\\\scripts\\\\batch-add-articles.ps1'' -SourceDir ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable'' -ExcludeFiles ''Addressable（1）导入Addressable.md''\")",
+      "Bash(powershell -Command \"& ''.\\\\scripts\\\\batch-add-articles.ps1'' -SourceDir ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable'' -ExcludeFiles ''''\")",
+      "Bash(powershell -Command \"& ''.\\\\scripts\\\\batch-add-articles.ps1'' -SourceDir ''F:\\\\0.学习\\\\Note\\\\typorafiles\\\\游戏开发\\\\Unity\\\\Addressbale\\\\Taikr\\\\CSDN博客Addressable''\")"
     ]
   }
 }

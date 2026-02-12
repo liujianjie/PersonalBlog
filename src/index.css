@@ -51,12 +51,39 @@
   @apply mb-4;
 }
 
-.markdown-body ul, .markdown-body ol {
+.markdown-body ul {
   @apply mb-4 ml-6;
+  list-style-type: disc;
+  padding-left: 1.5rem;
+}
+
+.markdown-body ol {
+  @apply mb-4 ml-6;
+  list-style-type: decimal;
+  padding-left: 1.5rem;
 }
 
 .markdown-body li {
   @apply mb-2;
+  padding-left: 0.5rem;
+}
+
+.markdown-body li > p {
+  @apply mb-2;
+}
+
+/* 嵌套列表 */
+.markdown-body ul ul {
+  @apply mt-2 mb-2;
+}
+
+.markdown-body ol ol {
+  @apply mt-2 mb-2;
+}
+
+.markdown-body ul ol,
+.markdown-body ol ul {
+  @apply mt-2 mb-2;
 }
 
 .markdown-body code {
