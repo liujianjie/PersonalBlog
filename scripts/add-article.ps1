@@ -23,7 +23,25 @@ $sourceFile = Get-Item $SourceMdPath
 $fileName = $sourceFile.Name
 $fileBaseName = $sourceFile.BaseName
 
+# 获取文件的创建时间和修改时间，取最早的那个
+$creationTime = $sourceFile.CreationTime
+$modifiedTime = $sourceFile.LastWriteTime
+
+# 比较两个时间，取最早的
+if ($creationTime -lt $modifiedTime) {
+    $earliestTime = $creationTime
+    $timeSource = "创建时间"
+} else {
+    $earliestTime = $modifiedTime
+    $timeSource = "修改时间"
+}
+
+$formattedDate = $earliestTime.ToString("yyyy-MM-dd")
+
 Write-Host "📝 处理文章: $fileName" -ForegroundColor Cyan
+Write-Host "📅 创建时间: $($creationTime.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
+Write-Host "📅 修改时间: $($modifiedTime.ToString('yyyy-MM-dd HH:mm:ss'))" -ForegroundColor Gray
+Write-Host "✅ 使用时间: $formattedDate ($timeSource)" -ForegroundColor Green
 
 # 计算相对路径（从 typorafiles 到文章文件）
 $relativePath = $sourceFile.DirectoryName.Replace($baseSourceDir, "").TrimStart("\")
@@ -96,7 +114,6 @@ foreach ($m in $idMatches) {
 }
 $newId = $maxId + 1
 
-$today = Get-Date -Format "yyyy-MM-dd"
 $mdFilePath = "/PersonalBlog/posts/$($relativePath.Replace('\', '/'))/$fileName"
 
 Write-Host ""
@@ -104,7 +121,7 @@ Write-Host "{" -ForegroundColor White
 Write-Host "  id: '$newId'," -ForegroundColor White
 Write-Host "  title: '$fileBaseName'," -ForegroundColor White
 Write-Host "  excerpt: '这里填写文章摘要（显示在首页）'," -ForegroundColor Yellow
-Write-Host "  date: '$today'," -ForegroundColor White
+Write-Host "  date: '$formattedDate'," -ForegroundColor White
 Write-Host "  tags: ['Unity', 'Addressable', '游戏开发']," -ForegroundColor Yellow
 Write-Host "  author: '博主'," -ForegroundColor White
 Write-Host "  readTime: 5," -ForegroundColor Yellow

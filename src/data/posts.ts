@@ -5,7 +5,7 @@ export const posts: Post[] = [
     id: '6',
     title: 'Addressable（1）导入 Addressable',
     excerpt: '详细介绍如何在 Unity 项目中导入和配置 Addressable 系统，包括安装步骤和配置文件创建。',
-    date: '2024-02-12',
+    date: '2023-11-20',
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 5,
