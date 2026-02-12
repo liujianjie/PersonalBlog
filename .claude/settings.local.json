@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.lfzxb.top)",
+      "Bash(cd /d G:workspace2.workProjectPersonalBlog)",
+      "Bash(git add .)"
+    ]
+  }
+}
