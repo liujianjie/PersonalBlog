@@ -27,7 +27,7 @@ export default function Home() {
         return (
           post.title.toLowerCase().includes(query) ||
           post.excerpt.toLowerCase().includes(query) ||
-          post.content.toLowerCase().includes(query) ||
+          post.content?.toLowerCase().includes(query) ||
           post.tags.some((tag) => tag.toLowerCase().includes(query))
         );
       }
