@@ -2,7 +2,8 @@ export interface Post {
   id: string;
   title: string;
   excerpt: string;
-  content: string;
+  content?: string; // 可选，用于内联内容
+  mdFile?: string; // 可选，Markdown 文件路径
   date: string;
   tags: string[];
   author: string;

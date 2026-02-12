@@ -2,6 +2,16 @@ import { Post } from '../types';
 
 export const posts: Post[] = [
   {
+    id: '6',
+    title: 'Addressable（1）导入 Addressable',
+    excerpt: '详细介绍如何在 Unity 项目中导入和配置 Addressable 系统，包括安装步骤和配置文件创建。',
+    date: '2024-02-12',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 5,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressable/Addressable（1）导入Addressable.md'
+  },
+  {
     id: '1',
     title: '欢迎来到我的博客',
     excerpt: '这是我的第一篇博客文章，在这里我将分享关于编程、技术和生活的点点滴滴。',

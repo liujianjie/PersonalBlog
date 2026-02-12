@@ -3,7 +3,10 @@
     "allow": [
       "WebFetch(domain:www.lfzxb.top)",
       "Bash(cd /d G:workspace2.workProjectPersonalBlog)",
-      "Bash(git add .)"
+      "Bash(git add .)",
+      "Bash(git commit -m \"feat: 初始化个人博客项目\n\n- 添加 React + TypeScript + Tailwind CSS 技术栈\n- 实现首页、文章详情页、关于页面\n- 添加搜索和标签筛选功能\n- 配置 GitHub Pages 部署\n\nCo-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>\")",
+      "Bash(git push origin main)",
+      "Bash(npm run deploy)"
     ]
   }
 }

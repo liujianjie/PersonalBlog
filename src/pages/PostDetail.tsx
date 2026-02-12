@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
@@ -10,8 +11,45 @@ import 'highlight.js/styles/atom-one-dark.css';
 export default function PostDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [markdownContent, setMarkdownContent] = useState<string>('');
+  const [loading, setLoading] = useState(true);
 
   const post = posts.find((p) => p.id === id);
+
+  // 加载 Markdown 文件内容
+  useEffect(() => {
+    if (!post) {
+      setLoading(false);
+      return;
+    }
+
+    if (post.mdFile) {
+      // 如果使用外部 .md 文件，动态加载
+      fetch(post.mdFile)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Failed to load markdown file');
+          }
+          return response.text();
+        })
+        .then((text) => {
+          setMarkdownContent(text);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error loading markdown:', error);
+          setMarkdownContent('# 加载失败\n\n无法加载文章内容。');
+          setLoading(false);
+        });
+    } else if (post.content) {
+      // 如果使用内联 content，直接使用
+      setMarkdownContent(post.content);
+      setLoading(false);
+    } else {
+      setMarkdownContent('# 错误\n\n文章内容未配置。');
+      setLoading(false);
+    }
+  }, [post]);
 
   if (!post) {
     return (
@@ -42,6 +80,17 @@ export default function PostDetail() {
           >
             返回首页
           </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="container-custom py-16 text-center">
+        <div className="card p-12">
+          <div className="w-16 h-16 mx-auto mb-4 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin"></div>
+          <p className="text-gray-600">加载中...</p>
         </div>
       </div>
     );
@@ -112,7 +161,7 @@ export default function PostDetail() {
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeHighlight]}
             >
-              {post.content}
+              {markdownContent}
             </ReactMarkdown>
           </div>
         </article>
