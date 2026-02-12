@@ -2,6 +2,66 @@ import { Post } from '../types';
 
 export const posts: Post[] = [
   {
+    id: '12',
+    title: 'Addressable（15）构建布局报告、常见问题总结（分组压缩策略）',
+    excerpt: '分析构建布局报告，总结 Addressable 使用中的常见问题和分组压缩策略。',
+    date: '2024-02-19',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 8,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（15）构建布局报告、常见问题总结（分组压缩策略）.md'
+  },
+  {
+    id: '11',
+    title: 'Addressable（14）事件查看窗口、分析窗口',
+    excerpt: '使用事件查看窗口和分析窗口来调试和优化 Addressable 资源。',
+    date: '2024-10-11',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 7,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（14）事件查看窗口、分析窗口.md'
+  },
+  {
+    id: '10',
+    title: 'Addressable（13）自定义更新目录和下载AB包、引用计数规则',
+    excerpt: '深入讲解自定义更新目录、AB包下载和引用计数规则。',
+    date: '2024-02-19',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 9,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（13）自定义更新目录和下载AB包、引用计数规则.md'
+  },
+  {
+    id: '9',
+    title: 'Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle',
+    excerpt: '详解根据资源定位信息加载资源的多种方式和 Async Operation Handle 的使用。',
+    date: '2024-02-18',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 10,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle.md'
+  },
+  {
+    id: '8',
+    title: 'Addressable（11）资源更新',
+    excerpt: '学习如何使用 Addressable 进行资源的更新和热更新。',
+    date: '2024-02-18',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 12,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（11）资源更新.md'
+  },
+  {
+    id: '7',
+    title: 'Addressable（10）资源打包加载（远端）',
+    excerpt: '介绍 Addressable 远端资源的打包和加载方法。',
+    date: '2023-12-11',
+    tags: ['Unity', 'Addressable', '游戏开发'],
+    author: '博主',
+    readTime: 8,
+    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（10）资源打包加载（远端）.md'
+  },
+  {
     id: '20',
     title: 'Addressable（9）资源打包理论与本地应用',
     excerpt: '详细讲解 Addressable 资源打包的理论知识和本地应用实践。',
@@ -80,66 +140,6 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 6,
     mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（2）寻址资源设置.md'
-  },
-  {
-    id: '12',
-    title: 'Addressable（15）构建布局报告、常见问题总结（分组压缩策略）',
-    excerpt: '分析构建布局报告，总结 Addressable 使用中的常见问题和分组压缩策略。',
-    date: '2024-02-19',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 8,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（15）构建布局报告、常见问题总结（分组压缩策略）.md'
-  },
-  {
-    id: '11',
-    title: 'Addressable（14）事件查看窗口、分析窗口',
-    excerpt: '使用事件查看窗口和分析窗口来调试和优化 Addressable 资源。',
-    date: '2024-10-11',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 7,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（14）事件查看窗口、分析窗口.md'
-  },
-  {
-    id: '10',
-    title: 'Addressable（13）自定义更新目录和下载AB包、引用计数规则',
-    excerpt: '深入讲解自定义更新目录、AB包下载和引用计数规则。',
-    date: '2024-02-19',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 9,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（13）自定义更新目录和下载AB包、引用计数规则.md'
-  },
-  {
-    id: '9',
-    title: 'Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle',
-    excerpt: '详解根据资源定位信息加载资源的多种方式和 Async Operation Handle 的使用。',
-    date: '2024-02-18',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 10,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle.md'
-  },
-  {
-    id: '8',
-    title: 'Addressable（11）资源更新',
-    excerpt: '学习如何使用 Addressable 进行资源的更新和热更新。',
-    date: '2024-02-18',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 12,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（11）资源更新.md'
-  },
-  {
-    id: '7',
-    title: 'Addressable（10）资源打包加载（远端）',
-    excerpt: '介绍 Addressable 远端资源的打包和加载方法。',
-    date: '2023-12-11',
-    tags: ['Unity', 'Addressable', '游戏开发'],
-    author: '博主',
-    readTime: 8,
-    mdFile: '/PersonalBlog/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（10）资源打包加载（远端）.md'
   },
   {
     id: '6',
