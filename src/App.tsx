@@ -8,7 +8,7 @@ import About from './pages/About';
 function App() {
   return (
     <Router basename="/PersonalBlog">
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-dark-900">
         <Header />
         <main className="flex-1">
           <Routes>

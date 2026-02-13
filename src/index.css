@@ -1,14 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   现代深色博客 - 全局样式
+   ============================================ */
+
 @layer base {
+  * {
+    @apply border-dark-600;
+  }
+
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply overflow-x-hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold;
+    @apply font-semibold text-dark-50;
+    letter-spacing: -0.02em;
+  }
+
+  /* 滚动条 */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0d1117;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+
+  /* 选中 */
+  ::selection {
+    background: rgba(88, 166, 255, 0.3);
+    color: #f0f6fc;
   }
 }
 
@@ -17,112 +58,297 @@
     @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  /* 深色卡片 */
   .card {
-    @apply bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300;
+    @apply relative rounded-xl overflow-hidden transition-all duration-300;
+    background: #161b22;
+    border: 1px solid #30363d;
+  }
+
+  .card:hover {
+    border-color: #484f58;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  /* 玻璃态卡片 */
+  .glass-card {
+    @apply backdrop-blur-xl rounded-xl;
+    background: rgba(22, 27, 34, 0.8);
+    border: 1px solid rgba(48, 54, 61, 0.8);
+  }
+
+  /* 按钮 */
+  .btn {
+    @apply px-6 py-2.5 rounded-lg font-medium transition-all duration-300;
+    @apply focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-dark-900;
   }
 
   .btn-primary {
-    @apply px-6 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors duration-200;
+    @apply text-white;
+    background: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+    @apply hover:opacity-90;
+    @apply shadow-lg;
+    @apply focus:ring-accent-blue;
   }
 
   .btn-secondary {
-    @apply px-6 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200;
+    @apply bg-dark-700 text-dark-100 border border-dark-600;
+    @apply hover:bg-dark-600 hover:border-dark-500;
+  }
+
+  /* 徽章/标签 */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply bg-accent-blue/10 text-accent-blue border border-accent-blue/20;
+  }
+
+  /* 渐变文字 */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #58a6ff 0%, #bc8cff 100%);
+  }
+
+  /* 发光边框 */
+  .glow-border {
+    position: relative;
+  }
+
+  .glow-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #58a6ff, #bc8cff, #f778ba);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .glow-border:hover::after {
+    opacity: 1;
   }
 }
 
-/* Markdown样式 */
+/* ============================================
+   Hero 背景粒子效果
+   ============================================ */
+
+.hero-bg {
+  position: relative;
+  background: linear-gradient(180deg, 
+    #0d1117 0%, 
+    #0f1923 30%, 
+    #111d2b 50%, 
+    #0f1923 70%, 
+    #0d1117 100%
+  );
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 50%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(188, 140, 255, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(57, 210, 192, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* 星星闪烁效果 */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* ============================================
+   MARKDOWN 样式 - 深色主题
+   ============================================ */
+
 .markdown-body {
-  @apply text-gray-700 leading-relaxed;
+  @apply text-dark-100 leading-relaxed;
+  font-size: 16px;
+  line-height: 1.8;
 }
 
 .markdown-body h1 {
-  @apply text-3xl font-bold mt-8 mb-4 text-gray-900;
+  @apply text-3xl font-bold mt-12 mb-6;
+  color: #f0f6fc;
 }
 
 .markdown-body h2 {
-  @apply text-2xl font-bold mt-6 mb-3 text-gray-900;
+  @apply text-2xl font-semibold mt-10 mb-5;
+  color: #f0f6fc;
+  position: relative;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #30363d;
 }
 
 .markdown-body h3 {
-  @apply text-xl font-bold mt-4 mb-2 text-gray-900;
+  @apply text-xl font-semibold mt-8 mb-4;
+  color: #f0f6fc;
 }
 
 .markdown-body p {
-  @apply mb-4;
+  @apply mb-6 leading-loose;
+  color: #c9d1d9;
 }
 
-.markdown-body ul {
-  @apply mb-4 ml-6;
-  list-style-type: disc;
-  padding-left: 1.5rem;
+.markdown-body ul, .markdown-body ol {
+  @apply mb-6 ml-6 space-y-2;
+}
+
+.markdown-body ul li {
+  @apply relative pl-6;
+  list-style-type: none;
+}
+
+.markdown-body ul li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #58a6ff;
 }
 
 .markdown-body ol {
-  @apply mb-4 ml-6;
-  list-style-type: decimal;
-  padding-left: 1.5rem;
+  @apply list-decimal;
 }
 
 .markdown-body li {
-  @apply mb-2;
-  padding-left: 0.5rem;
-}
-
-.markdown-body li > p {
-  @apply mb-2;
-}
-
-/* 嵌套列表 */
-.markdown-body ul ul {
-  @apply mt-2 mb-2;
-}
-
-.markdown-body ol ol {
-  @apply mt-2 mb-2;
-}
-
-.markdown-body ul ol,
-.markdown-body ol ul {
-  @apply mt-2 mb-2;
+  color: #c9d1d9;
 }
 
 .markdown-body code {
-  @apply bg-gray-100 px-2 py-1 rounded text-sm font-mono text-pink-600;
+  @apply px-2 py-1 rounded text-sm;
+  background: rgba(88, 166, 255, 0.1);
+  color: #58a6ff;
+  border: 1px solid rgba(88, 166, 255, 0.2);
+  font-family: 'Fira Code', monospace;
 }
 
 .markdown-body pre {
-  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+  @apply p-5 rounded-xl overflow-x-auto mb-6;
+  background: #0d1117;
+  border: 1px solid #30363d;
 }
 
 .markdown-body pre code {
-  @apply bg-transparent text-gray-100 p-0;
+  @apply bg-transparent p-0 border-0;
+  color: #c9d1d9;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .markdown-body blockquote {
-  @apply border-l-4 border-primary-500 pl-4 italic text-gray-600 my-4;
+  @apply pl-6 py-4 my-6 rounded-r-lg;
+  border-left: 4px solid #58a6ff;
+  background: rgba(88, 166, 255, 0.05);
+  color: #8b949e;
+  font-style: italic;
 }
 
 .markdown-body a {
-  @apply text-primary-600 hover:text-primary-700 underline;
+  @apply no-underline transition-colors duration-200;
+  color: #58a6ff;
+}
+
+.markdown-body a:hover {
+  color: #79c0ff;
+  text-decoration: underline;
 }
 
 .markdown-body img {
-  @apply max-w-full h-auto rounded-lg my-4;
+  @apply max-w-full h-auto rounded-xl my-8;
+  border: 1px solid #30363d;
 }
 
 .markdown-body table {
-  @apply w-full border-collapse mb-4;
+  @apply w-full border-collapse mb-6 rounded-xl overflow-hidden;
 }
 
 .markdown-body th, .markdown-body td {
-  @apply border border-gray-300 px-4 py-2;
+  @apply px-4 py-3;
+  border: 1px solid #30363d;
 }
 
 .markdown-body th {
-  @apply bg-gray-100 font-bold;
+  @apply font-semibold;
+  background: #161b22;
+  color: #f0f6fc;
 }
 
-/* 代码高亮 */
+.markdown-body td {
+  color: #c9d1d9;
+}
+
+.markdown-body tr:hover td {
+  background: rgba(88, 166, 255, 0.05);
+}
+
+.markdown-body hr {
+  @apply my-12 border-0 h-px;
+  background: linear-gradient(to right, transparent, #30363d, transparent);
+}
+
+/* 代码高亮 - GitHub Dark */
 .hljs {
-  @apply bg-gray-900 text-gray-100;
+  @apply bg-transparent;
+  color: #c9d1d9;
+}
+
+.hljs-keyword { color: #ff7b72; }
+.hljs-string { color: #a5d6ff; }
+.hljs-function { color: #d2a8ff; }
+.hljs-number { color: #79c0ff; }
+.hljs-comment { color: #8b949e; font-style: italic; }
+.hljs-title { color: #d2a8ff; }
+.hljs-built_in { color: #ffa657; }
+.hljs-attr { color: #79c0ff; }
+.hljs-params { color: #c9d1d9; }
+.hljs-literal { color: #79c0ff; }
+.hljs-type { color: #ffa657; }
+
+/* ============================================
+   滚动动画
+   ============================================ */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   文章封面占位图
+   ============================================ */
+
+.cover-placeholder {
+  background: linear-gradient(135deg, #21262d 0%, #161b22 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-placeholder svg {
+  color: #30363d;
 }

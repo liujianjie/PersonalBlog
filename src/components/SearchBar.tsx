@@ -12,42 +12,45 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
     onSearch(query);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setQuery(value);
+    // 实时搜索
+    onSearch(value);
+  };
+
   const handleClear = () => {
     setQuery('');
     onSearch('');
   };
 
   return (
-    <form onSubmit={handleSubmit} className="card p-6 mb-6">
+    <form onSubmit={handleSubmit} className="mb-6">
       <div className="relative">
+        {/* 搜索图标 */}
+        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-dark-400">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="搜索文章标题、内容或标签..."
-          className="w-full px-4 py-3 pr-24 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          onChange={handleChange}
+          placeholder="搜索文章..."
+          className="w-full pl-11 pr-20 py-3 rounded-xl bg-dark-800 border border-dark-600 text-dark-100 placeholder-dark-400 focus:outline-none focus:border-accent-blue/50 focus:ring-1 focus:ring-accent-blue/30 transition-all duration-200 text-sm"
         />
 
-        <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
-          {query && (
-            <button
-              type="button"
-              onClick={handleClear}
-              className="px-3 py-1 text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              清除
-            </button>
-          )}
+        {query && (
           <button
-            type="submit"
-            className="px-4 py-1 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors flex items-center"
+            type="button"
+            onClick={handleClear}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 px-3 py-1 text-xs text-dark-400 hover:text-dark-200 bg-dark-700 rounded-md hover:bg-dark-600 transition-colors"
           >
-            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            搜索
+            清除
           </button>
-        </div>
+        )}
       </div>
     </form>
   );
