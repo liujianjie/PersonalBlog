@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -17,10 +19,10 @@ export default function Footer() {
             <h3 className="text-white font-bold text-lg mb-4">快速链接</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/" className="hover:text-primary-400 transition-colors">首页</a>
+                <Link to="/" className="hover:text-primary-400 transition-colors">首页</Link>
               </li>
               <li>
-                <a href="/about" className="hover:text-primary-400 transition-colors">关于</a>
+                <Link to="/about" className="hover:text-primary-400 transition-colors">关于</Link>
               </li>
             </ul>
           </div>

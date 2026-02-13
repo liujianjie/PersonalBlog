@@ -7,7 +7,7 @@ import About from './pages/About';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/PersonalBlog">
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">

@@ -755,11 +755,11 @@ git revert <commit>
 ];
 
 export const authorInfo = {
-  name: '博主昵称',
-  bio: '热爱编程和技术分享的开发者。专注于前端开发，喜欢探索新技术，记录学习和成长的点滴。',
+  name: 'Unity游戏开发者',
+  bio: '游戏客户端开发工程师，深耕引擎底层与图形学理论。完整学习游戏引擎开发（259篇笔记）与计算机图形学（99篇笔记），理解从OpenGL渲染到ECS架构的完整技术栈。Unity项目实战涵盖Flux架构、Addressable、URP、热更新等核心技术。',
   social: {
-    github: 'https://github.com/yourusername',
-    email: 'your.email@example.com',
-    website: 'https://your-website.com'
+    github: 'https://github.com/liujianjie',
+    email: 'contact@example.com',
+    website: 'https://liujianjie.github.io/PersonalBlog/'
   }
 };

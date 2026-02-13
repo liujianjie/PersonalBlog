@@ -79,43 +79,87 @@ export default function About() {
               <svg className="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
               </svg>
-              技术栈
+              核心技能
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {['React', 'TypeScript', 'Node.js', 'Python', 'Vue', 'TailwindCSS', 'Git', 'Docker'].map((skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm font-medium"
-                >
-                  {skill}
-                </span>
-              ))}
+            <div className="space-y-3">
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">引擎底层（259篇笔记）</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['游戏引擎构建', 'ECS架构', '渲染器设计', 'OpenGL', '帧缓冲', '批渲染', '物理引擎', 'ImGui'].map((skill) => (
+                    <span key={skill} className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">图形学理论（99篇笔记）</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['Games101', 'LearnOpenGL', 'Shader编程', '光照模型', '材质系统', '帧缓冲', '实例化渲染'].map((skill) => (
+                    <span key={skill} className="px-2 py-1 bg-green-50 text-green-700 rounded text-xs font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">Unity应用层</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['Flux架构', 'Addressable', 'URP渲染管线', '热更新', 'UI系统', '循环列表', 'Shader', '导表工具'].map((skill) => (
+                    <span key={skill} className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-xs font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h4 className="text-sm font-semibold text-gray-700 mb-2">编程语言</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['C++', 'C#', 'Python', 'GLSL'].map((skill) => (
+                    <span key={skill} className="px-2 py-1 bg-orange-50 text-orange-700 rounded text-xs font-medium">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="card p-6">
             <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
               <svg className="w-6 h-6 mr-2 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
-              兴趣爱好
+              学习成果
             </h3>
-            <ul className="space-y-2 text-gray-700">
+            <ul className="space-y-3 text-gray-700">
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
-                开源项目贡献
+                <span className="text-primary-600 mr-2 mt-1">📚</span>
+                <div>
+                  <strong>游戏引擎开发（259篇笔记）</strong>
+                  <p className="text-sm text-gray-600">完整学习TheCherno游戏引擎系列，从窗口创建到ECS、从渲染器到物理引擎</p>
+                </div>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
-                技术博客写作
+                <span className="text-primary-600 mr-2 mt-1">🎨</span>
+                <div>
+                  <strong>计算机图形学（99篇笔记）</strong>
+                  <p className="text-sm text-gray-600">系统学习Games101与LearnOpenGL，掌握图形学理论与OpenGL实践</p>
+                </div>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
-                阅读和学习新技术
+                <span className="text-primary-600 mr-2 mt-1">⚙️</span>
+                <div>
+                  <strong>Unity技术深耕</strong>
+                  <p className="text-sm text-gray-600">Flux架构、Addressable、URP、热更新、自定义UI组件、Shader开发</p>
+                </div>
               </li>
               <li className="flex items-start">
-                <span className="text-primary-600 mr-2">•</span>
-                参加技术社区活动
+                <span className="text-primary-600 mr-2 mt-1">🎮</span>
+                <div>
+                  <strong>项目实战经验</strong>
+                  <p className="text-sm text-gray-600">多个复杂游戏系统的架构设计与实现，从技术选型到性能优化</p>
+                </div>
               </li>
             </ul>
           </div>
@@ -126,20 +170,31 @@ export default function About() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">关于这个博客</h2>
           <div className="space-y-4 text-gray-700 leading-relaxed">
             <p>
-              这个博客是我记录学习和成长的个人空间。在这里，我分享技术文章、学习笔记和生活感悟。
+              这是我的游戏开发技术学习与实践记录空间。从游戏引擎底层原理到Unity应用层开发，从计算机图形学理论到项目实战经验，记录了我在游戏开发道路上的技术探索。
             </p>
             <p>
-              博客采用现代化的技术栈构建：
+              <strong>学习历程：</strong>
             </p>
-            <ul className="list-disc list-inside space-y-2 ml-4">
-              <li><strong>前端框架：</strong>React 18 + TypeScript</li>
-              <li><strong>构建工具：</strong>Vite</li>
-              <li><strong>样式方案：</strong>Tailwind CSS</li>
-              <li><strong>路由管理：</strong>React Router</li>
-              <li><strong>Markdown：</strong>react-markdown + 代码高亮</li>
-            </ul>
-            <p>
-              如果你对这个博客的实现感兴趣，可以查看源代码或与我交流。
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 ml-4">
+              <div className="border-l-4 border-blue-500 pl-3">
+                <strong className="text-blue-700">游戏引擎开发（259篇）</strong>
+                <p className="text-sm">跟随TheCherno从零构建游戏引擎，深入理解窗口系统、事件系统、渲染器、ECS、物理引擎、批渲染等核心技术</p>
+              </div>
+              <div className="border-l-4 border-green-500 pl-3">
+                <strong className="text-green-700">计算机图形学（99篇）</strong>
+                <p className="text-sm">系统学习Games101和LearnOpenGL，掌握光照模型、材质系统、Shader编程、帧缓冲、实例化渲染等图形学核心知识</p>
+              </div>
+              <div className="border-l-4 border-purple-500 pl-3">
+                <strong className="text-purple-700">Unity技术栈</strong>
+                <p className="text-sm">Flux架构、Addressable资源管理、URP渲染管线、热更新方案、自定义UI组件、Shader开发、导表工具流</p>
+              </div>
+              <div className="border-l-4 border-orange-500 pl-3">
+                <strong className="text-orange-700">项目实战</strong>
+                <p className="text-sm">多个复杂游戏系统的架构设计与实现，涵盖养成、装备、商城、社交、引导等核心玩法模块</p>
+              </div>
+            </div>
+            <p className="pt-2">
+              博客采用 <strong>React + TypeScript + Vite</strong> 构建，支持 Markdown 文章管理。内容来自真实学习笔记与项目实践，欢迎技术交流！
             </p>
           </div>
         </div>
