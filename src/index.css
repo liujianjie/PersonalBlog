@@ -10,7 +10,7 @@
 
 @layer base {
   * {
-    @apply border-dark-600;
+    border-color: #30363d;
   }
 
   body {
