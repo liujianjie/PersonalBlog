@@ -2,6 +2,8 @@
 
 一个使用 React + TypeScript + Tailwind CSS 构建的现代化个人博客网站。
 
+访问地址：https://liujianjie.github.io/PersonalBlog/
+
 ## 特性
 
 - ✨ 现代化的 UI 设计
