@@ -70,7 +70,7 @@
     - 同样把 `coverImage` / 内嵌图片绝对路径前缀更新(由 `gen-search-index` 时再 sanity check)
   - **Verify**:`ls frontend-uniapp/public/posts/游戏开发` 看到中文目录;批量 grep 确认 `/PersonalBlog/` 已被全部替换
 
-- [ ] **T07** 类型 + url-encode + markdown composable
+- [x] **T07** 类型 + url-encode + markdown composable
   - **Files**:`frontend-uniapp/src/types/index.ts`、`src/composables/url-encode.ts`、`src/composables/markdown.ts`、`tests/unit/markdown.spec.ts`、`tests/unit/url-encode.spec.ts`
   - **Acceptance**:
     - `Post` 类型从老 React 版 1:1 复制
@@ -79,7 +79,7 @@
     - 单测:列表/有序/代码块/图片(中文路径)/链接 5 类用例
   - **Verify**:`pnpm test:unit` 全过
 
-- [ ] **T08** 首页 + 文章详情
+- [x] **T08** 首页 + 文章详情
   - **Files**:`frontend-uniapp/pages/index/index.vue`、`pages/post/post.vue`、`src/components/post-card.vue`
   - **Acceptance**:
     - 首页:倒序按 `date` 列出全部文章,每条 post-card 显示标题/摘要/标签/日期/读时
@@ -87,7 +87,7 @@
     - 代码高亮 + 中文路径图片 + GitHub 图片三种来源全部加载
   - **Verify**:浏览器抽 5 篇手测覆盖:Addressable(本地中文图)、OpenGL(GitHub 图)、ProtoBuf(纯文本)、含代码块的、含表格的
 
-- [ ] **T09** 标签页
+- [x] **T09** 标签页
   - **Files**:`pages/tag/tag.vue`、`src/composables/tags.ts`(标签聚合)
   - **Acceptance**:
     - 标签云首页 `/tag` 列出所有 tag + 文章数

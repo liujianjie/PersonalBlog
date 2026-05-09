@@ -1,15 +1,23 @@
 <script setup lang="ts">
 import ThemeToggle from './theme-toggle.vue'
+
+function goHome() {
+  uni.reLaunch({ url: '/pages/index/index' })
+}
+function goTags() {
+  uni.navigateTo({ url: '/pages/tag/tag' })
+}
 </script>
 
 <template>
   <view class="site-header">
     <view class="inner">
-      <view class="brand">
+      <view class="brand" @click="goHome">
         <text class="brand-name">Personal Blog</text>
         <text class="brand-tag">技术笔记 · Unity / OpenGL / 计算机基础</text>
       </view>
       <view class="actions">
+        <text class="nav-link" @click="goTags">标签</text>
         <view class="search-placeholder" title="Search lands in T10">
           <text class="search-hint">⌕ search · coming in T10</text>
         </view>
@@ -41,11 +49,16 @@ import ThemeToggle from './theme-toggle.vue'
   display: flex;
   flex-direction: column;
   gap: 2px;
+  cursor: pointer;
+}
+.brand:hover .brand-name {
+  color: var(--accent);
 }
 .brand-name {
   font-size: 18px;
   font-weight: 600;
   color: var(--fg);
+  transition: color 0.15s;
 }
 .brand-tag {
   font-size: 12px;
@@ -55,6 +68,18 @@ import ThemeToggle from './theme-toggle.vue'
   display: flex;
   align-items: center;
   gap: 12px;
+}
+.nav-link {
+  font-size: 14px;
+  color: var(--fg);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-link:hover {
+  color: var(--accent);
+  background: var(--code-bg);
 }
 .search-placeholder {
   font-size: 13px;

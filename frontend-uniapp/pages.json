@@ -5,6 +5,18 @@
       "style": {
         "navigationBarTitleText": "Personal Blog"
       }
+    },
+    {
+      "path": "pages/post/post",
+      "style": {
+        "navigationBarTitleText": "Post"
+      }
+    },
+    {
+      "path": "pages/tag/tag",
+      "style": {
+        "navigationBarTitleText": "Tags"
+      }
     }
   ],
   "globalStyle": {

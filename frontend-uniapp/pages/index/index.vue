@@ -1,21 +1,26 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import SiteHeader from '@/components/site-header.vue'
-// Phase 1 placeholder. Real list lands in T08 (Phase 2).
+import PostCard from '@/components/post-card.vue'
+import { posts } from '@/data/posts'
+
+const sorted = computed(() =>
+  [...posts].sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+)
+
+const totalLabel = computed(() => `${sorted.value.length} 篇文章`)
 </script>
 
 <template>
   <view class="page-shell">
     <SiteHeader />
     <view class="page-container">
-      <h1 class="title">Personal Blog</h1>
-      <p class="subtitle">Phase 1 scaffold. Articles arrive in Phase 2.</p>
-      <view class="status-card">
-        <text class="status-line">✓ uni-app + Vue 3 + UnoCSS scaffold</text>
-        <text class="status-line">✓ Theme store (light / dark / auto) wired</text>
-        <text class="status-line">✓ SiteHeader with theme toggle</text>
-        <text class="status-line">○ Article list — T08</text>
-        <text class="status-line">○ Markdown rendering — T07/T08</text>
-        <text class="status-line">○ Search — T10</text>
+      <view class="page-head">
+        <h1 class="title">文章</h1>
+        <text class="count">{{ totalLabel }}</text>
+      </view>
+      <view class="grid">
+        <PostCard v-for="p in sorted" :key="p.id" :post="p" />
       </view>
     </view>
   </view>
@@ -33,29 +38,30 @@ import SiteHeader from '@/components/site-header.vue'
   padding: 32px 24px;
   width: 100%;
 }
+.page-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+}
 .title {
-  font-size: 32px;
+  margin: 0;
+  font-size: 28px;
   font-weight: 600;
   color: var(--fg);
-  margin: 0;
 }
-.subtitle {
+.count {
   color: var(--muted);
-  margin: 8px 0 24px;
-}
-.status-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-}
-.status-line {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 13px;
-  color: var(--fg);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 16px;
+}
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
-
