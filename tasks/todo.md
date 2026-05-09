@@ -30,7 +30,7 @@
 
 ## Phase 1 — 前端脚手架
 
-- [ ] **T03** frontend-uniapp 工程初始化
+- [x] **T03** frontend-uniapp 工程初始化
   - **Files**:`frontend-uniapp/package.json`、`tsconfig.json`、`manifest.json`、`pages.json`、`vite.config.ts`、`uno.config.ts`、`src/main.ts`、`App.vue`(共 ~8 个,但都是初始化骨架文件)
   - **Acceptance**:
     - 依赖:`@dcloudio/*` + `vue@3.4` + `pinia` + `unocss` + `marked` + `highlight.js` + `minisearch` + 类型/dev 工具

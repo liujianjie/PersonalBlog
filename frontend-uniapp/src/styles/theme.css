@@ -1,0 +1,38 @@
+/* Theme tokens — full implementation lands in T04 (theme store + media query) */
+:root {
+  --bg: #ffffff;
+  --fg: #111827;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --code-bg: #f3f4f6;
+  --border: #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1020;
+    --fg: #e5e7eb;
+    --muted: #9ca3af;
+    --accent: #60a5fa;
+    --code-bg: #1f2937;
+    --border: #374151;
+  }
+}
+
+[data-theme='light'] {
+  --bg: #ffffff;
+  --fg: #111827;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --code-bg: #f3f4f6;
+  --border: #e5e7eb;
+}
+
+[data-theme='dark'] {
+  --bg: #0b1020;
+  --fg: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #60a5fa;
+  --code-bg: #1f2937;
+  --border: #374151;
+}

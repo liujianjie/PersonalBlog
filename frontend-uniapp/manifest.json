@@ -1,0 +1,19 @@
+{
+  "name": "Personal Blog",
+  "appid": "__BLOG_LOCAL__",
+  "description": "Personal blog (uni-app H5)",
+  "versionName": "0.1.0",
+  "versionCode": "1",
+  "transformPx": false,
+  "h5": {
+    "title": "Personal Blog",
+    "router": {
+      "mode": "history",
+      "base": "/"
+    },
+    "publicPath": "/",
+    "devServer": {
+      "port": 5174
+    }
+  }
+}
