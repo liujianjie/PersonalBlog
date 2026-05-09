@@ -62,7 +62,7 @@
 
 ## Phase 2 — 内容迁移与渲染
 
-- [ ] **T06** 内容文件物理迁移
+- [x] **T06** 内容文件物理迁移
   - **Files**:`git mv` `public/posts/` → `frontend-uniapp/public/posts/`;`public/images/` → `frontend-uniapp/public/images/`;`src/data/posts.ts` → `frontend-uniapp/src/data/posts.ts`(只改 import path,内容不动)
   - **Acceptance**:
     - 文件全部迁完,git history 保留(`git log --follow` 能追)
