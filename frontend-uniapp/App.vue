@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import { onLaunch } from '@dcloudio/uni-app'
+import { useThemeStore } from '@/stores/theme'
+
+const theme = useThemeStore()
+let stopSystemListener: (() => void) | null = null
 
 onLaunch(() => {
-  // boot hook reserved for theme bootstrap (T04 will wire prefers-color-scheme listener)
+  stopSystemListener = theme.listenSystemPreference()
 })
 </script>
 
+<template>
+  <view class="app-shell">
+    <slot />
+  </view>
+</template>
+
 <style>
-@import './src/styles/theme.css';
+@import './styles/theme.css';
+@import './styles/layout.css';
 
 html,
 body,
@@ -21,5 +32,13 @@ body,
     'Helvetica Neue', Arial, 'PingFang SC', 'Hiragino Sans GB',
     'Microsoft YaHei', sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 </style>
+
+

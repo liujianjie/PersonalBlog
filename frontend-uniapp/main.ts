@@ -1,7 +1,7 @@
 import { createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
 import 'virtual:uno.css'
-import './src/styles/theme.css'
+import './styles/theme.css'
 import App from './App.vue'
 
 export function createApp() {
@@ -9,3 +9,4 @@ export function createApp() {
   app.use(createPinia())
   return { app }
 }
+

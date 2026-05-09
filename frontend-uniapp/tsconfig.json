@@ -17,18 +17,18 @@
     "baseUrl": ".",
     "types": ["@dcloudio/types", "@types/node", "vitest/globals"],
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"]
     }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "pages/**/*.vue",
-    "pages/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.vue",
     "App.vue",
+    "main.ts",
     "uno.config.ts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.config.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }

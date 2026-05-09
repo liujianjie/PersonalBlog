@@ -40,7 +40,7 @@
     - `uno.config.ts` 配 presetUno + 项目色板(亮/暗 token)
   - **Verify**:`pnpm -C frontend-uniapp install` 成功;`pnpm -C frontend-uniapp dev:h5` 起来,浏览器打开看到空白首页(无错);`pnpm -C frontend-uniapp typecheck` 0 error
 
-- [ ] **T04** 主题 store + CSS 变量
+- [x] **T04** 主题 store + CSS 变量
   - **Files**:`frontend-uniapp/src/stores/theme.ts`、`src/styles/theme.css`、`src/components/theme-toggle.vue`
   - **Acceptance**:
     - Pinia store:`mode: 'light' | 'dark' | 'auto'`,持久化 localStorage,响应 `prefers-color-scheme`
@@ -48,7 +48,7 @@
     - theme-toggle 组件可切三态
   - **Verify**:`pnpm test:unit` 覆盖 theme store(切换/持久化/媒体查询)全过
 
-- [ ] **T05** 全局布局(顶栏 + 主题切换 + 容器)
+- [x] **T05** 全局布局(顶栏 + 主题切换 + 容器)
   - **Files**:`App.vue`(替换 T03 的占位)、`src/components/site-header.vue`、`src/styles/layout.css`
   - **Acceptance**:
     - 顶栏:博客名 + 搜索框占位(后续 Phase 3 接)+ theme-toggle
