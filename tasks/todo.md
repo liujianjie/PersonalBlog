@@ -16,7 +16,7 @@
     - README 顶部加"分支说明"段,指向 main/GH Pages 与 uniapp-rewrite/blog.multilab.cc 两条链
   - **Verify**:`git status` 干净;`git branch --show-current` 输出 `uniapp-rewrite`
 
-- [ ] **T02** install-binaries.ps1
+- [x] **T02** install-binaries.ps1
   - **Files**:`scripts/install-binaries.ps1`(新建)
   - **Acceptance**:
     - 脚本下载 caddy / cloudflared / nssm 到 `tools/`,已存在则跳过
