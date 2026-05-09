@@ -30,3 +30,16 @@ dist-ssr
 Dialogue
 .claude
 .claude
+
+# uniapp-rewrite 分支自托管部署相关
+# 二进制(install-binaries.ps1 下载)
+tools/*.exe
+# 凭据(P0 密钥铁律 — 绝不入仓)
+configs/cloudflared.yml
+.cloudflared/
+# 构建产物
+frontend-uniapp/dist/
+frontend-uniapp/node_modules/
+site/
+# 服务运行日志
+logs/

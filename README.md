@@ -1,5 +1,16 @@
 # 个人博客
 
+> **分支说明(2026-05-09 起)**
+>
+> | 分支 | 技术栈 | 部署 | 访问入口 | 状态 |
+> |---|---|---|---|---|
+> | `main` | React 18 + Vite + Tailwind | GitHub Pages | https://liujianjie.github.io/PersonalBlog/ | 冻结(回退/对照用) |
+> | `uniapp-rewrite` | uni-app + Vue 3 + UnoCSS | 本机 Caddy + Cloudflare Tunnel | https://blog.multilab.cc/ | 主版本(开发中) |
+>
+> 重写方案、目录、决策见 [`SPEC.md`](./SPEC.md);实施计划见 [`tasks/plan.md`](./tasks/plan.md) + [`tasks/todo.md`](./tasks/todo.md)。
+
+---
+
 一个使用 React + TypeScript + Tailwind CSS 构建的现代化个人博客网站。
 
 ## 特性
