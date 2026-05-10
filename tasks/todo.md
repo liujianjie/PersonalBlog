@@ -131,7 +131,7 @@
 
 ## Phase 3 — 增强功能(三条并行)
 
-- [ ] **T10** 全文搜索:前端
+- [x] **T10** 全文搜索:前端
   - **Files**:`src/composables/search.ts`、`pages/search/search.vue`、`src/components/search-box.vue`(替换 T05 的占位)
   - **Acceptance**:
     - 顶栏搜索框 → `/search?q=xxx`
@@ -139,7 +139,7 @@
     - 搜索结果按 score 排序,标题/标签/正文片段高亮匹配词
   - **Verify**:浏览器手测 3 个关键词命中
 
-- [ ] **T11** 全文搜索:索引生成
+- [x] **T11** 全文搜索:索引生成
   - **Files**:`scripts/gen-search-index.mjs`
   - **Acceptance**:
     - 扫 `frontend-uniapp/src/data/posts.ts` + 读对应 `.md` 抽前 500 字 + 标签
@@ -147,7 +147,7 @@
     - 纯 Node ESM,无第三方依赖外只用 minisearch
   - **Verify**:`node scripts/gen-search-index.mjs` 后 `search-index.json` 存在且 `JSON.parse` 通
 
-- [ ] **T12** RSS / Sitemap 生成
+- [x] **T12** RSS / Sitemap 生成
   - **Files**:`scripts/gen-feeds.ps1`
   - **Acceptance**:
     - 模板渲染输出 `frontend-uniapp/public/feed.xml`(RSS 2.0)+ `public/sitemap.xml`(标准 sitemap)
@@ -262,8 +262,8 @@
 | 0 基础 | 2 | ☐ |
 | 1 前端脚手架 | 3 | ☐ |
 | 2 内容迁移 | 4 | ☐ |
-| 3 增强功能 | 3 | ☐ |
+| 3 增强功能 | 3 | ☑ |
 | 4 本机部署 | 3 | ☐ |
 | 5 域名+服务 | 3 | ☐ |
 | 6 文档收官 | 4 | ☐ |
-| **总** | **22** | **0/22** |
+| **总** | **22** | **12/22** |
