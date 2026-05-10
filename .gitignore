@@ -40,6 +40,11 @@ configs/cloudflared.yml
 # 构建产物
 frontend-uniapp/dist/
 frontend-uniapp/node_modules/
+# 搜索索引(gen-search-index.mjs 在 publish 时重生成)
+frontend-uniapp/static/search-index.json
+# RSS / Sitemap(gen-feeds.ps1 在 publish 时重生成)
+frontend-uniapp/static/feed.xml
+frontend-uniapp/static/sitemap.xml
 site/
 # 服务运行日志
 logs/
