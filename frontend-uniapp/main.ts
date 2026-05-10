@@ -2,6 +2,7 @@ import { createSSRApp } from 'vue'
 import { createPinia } from 'pinia'
 import 'virtual:uno.css'
 import './styles/theme.css'
+import './styles/hljs.css'
 import App from './App.vue'
 
 export function createApp() {

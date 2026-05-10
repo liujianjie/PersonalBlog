@@ -145,6 +145,14 @@ async function loadContent(p: Post) {
   color: var(--fg);
   line-height: 1.75;
   font-size: 16px;
+  /* uni-app <view> defaults user-select: none across the board to avoid
+   * mobile mis-touch. Override here so readers can copy article text. */
+  user-select: text;
+  -webkit-user-select: text;
+}
+.markdown-body * {
+  user-select: text;
+  -webkit-user-select: text;
 }
 .markdown-body h1,
 .markdown-body h2,

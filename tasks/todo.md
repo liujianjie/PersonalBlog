@@ -99,6 +99,36 @@
 
 ---
 
+## Phase 2-Hotfix — 浏览器实测发现的三个回归
+
+> 用户通过浏览器实测反馈三个问题。改用 Playwright(webapp-testing skill)自验,
+> 不再让用户手动验证。
+
+- [x] **T-FIX-1** 图片加载失败
+  - **Files**:`composables/markdown.ts` 或 .md 替换脚本
+  - **Repro**:打开任一含图文章 → 图片 broken
+  - **Hypotheses**:
+    1. .md 里已编码的路径(`%e6...`)经 urlEncodePath 没能正确 round-trip
+    2. /images/ → /static/images/ 替换在 .md 内部图片引用上有遗漏
+    3. 中文路径 segment 有未编码字符导致 vite 静态服务 404
+  - **Verify**:Playwright 截屏 + Network 抓 image 请求看 status
+
+- [x] **T-FIX-2** 文章不能复制(选中文字)
+  - **Files**:`pages/post/post.vue` / `App.vue` / styles
+  - **Repro**:鼠标选中文章正文 → 不响应
+  - **Hypotheses**:uni-app `<view>` 在 H5 默认 `user-select: none`(跨端为了避免移动端误触);需要在 markdown-body 显式 `user-select: text`
+  - **Verify**:Playwright `evaluate` 选中段落文本看 selection.toString()
+
+- [x] **T-FIX-3** ``` 代码块渲染异常
+  - **Files**:`composables/markdown.ts` / 全局 hljs 主题 CSS
+  - **Repro**:任一含代码块文章 → 代码块样式不对
+  - **Hypotheses**:
+    1. 没引入 hljs 主题 CSS(github / atom-one-dark),hljs class 没颜色
+    2. marked v14 code renderer token API 名称误用
+  - **Verify**:Playwright 抓代码块 outerHTML + computed style 看是否有 hljs 配色
+
+---
+
 ## Phase 3 — 增强功能(三条并行)
 
 - [ ] **T10** 全文搜索:前端

@@ -10,7 +10,12 @@ const marked = new Marked({
 marked.use({
   renderer: {
     image({ href, title, text }) {
-      const safeHref = href ? urlEncodePath(href) : ''
+      // urlEncodePath is a path-segment encoder. Applying it to an absolute
+      // URL would encode `:` to `%3A`, breaking the scheme (`https:` -> `https%3A`)
+      // and turning the URL into a relative path. Skip encoding for any
+      // absolute / protocol-relative / data URL.
+      const isAbsolute = !!href && /^(https?:|data:|\/\/)/i.test(href)
+      const safeHref = !href ? '' : isAbsolute ? href : urlEncodePath(href)
       const safeText = (text || '').replace(/"/g, '&quot;')
       const titleAttr = title ? ` title="${title.replace(/"/g, '&quot;')}"` : ''
       return `<img src="${safeHref}" alt="${safeText}"${titleAttr} loading="lazy" />`
