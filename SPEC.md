@@ -209,6 +209,11 @@ pnpm -C frontend-uniapp test:unit
 
 # 类型检查
 pnpm -C frontend-uniapp typecheck
+
+# Playwright 端到端自验(图/选/代码块三项 probe;一键启服务+诊断+清理)
+powershell -ExecutionPolicy Bypass -File scripts/diagnose.ps1
+# 退出码 0 = PASS;1 = 至少一项回归;2 = dev:h5 60s 内没起来
+# 详见 tasks/diagnose.py(可参数化加更多目标文章)
 ```
 
 ---
