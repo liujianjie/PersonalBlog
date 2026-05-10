@@ -17,6 +17,12 @@
       "style": {
         "navigationBarTitleText": "Tags"
       }
+    },
+    {
+      "path": "pages/search/search",
+      "style": {
+        "navigationBarTitleText": "Search"
+      }
     }
   ],
   "globalStyle": {

@@ -78,17 +78,19 @@ export async function buildSearchIndex(posts, fetchBody) {
     storeFields: SEARCH_STORE_FIELDS,
     idField: 'id'
   })
-  // MiniSearch stores tags as the raw indexed string; we want array on read.
-  // Trick: pre-add docs with array tags but indexer flattens via extractField.
+  // We index tags as a joined string (so MiniSearch can score per token),
+  // but the UI wants to render an array of chips. Pass strings to addAll(),
+  // then patch the serialized storedFields back to arrays before writing.
   ms.addAll(docs.map(d => ({ ...d, tags: d.tags })))
-  // Patch: serialize a parallel storeFields override with tags as arrays.
   const json = JSON.stringify(ms)
   const parsed = JSON.parse(json)
-  if (parsed.storedFields) {
-    for (const id of Object.keys(parsed.storedFields)) {
-      const sf = parsed.storedFields[id]
-      const post = posts.find(p => String(p.id) === String(id))
-      if (post && Array.isArray(post.tags)) sf.tags = post.tags
+  if (parsed.storedFields && parsed.documentIds) {
+    for (const shortId of Object.keys(parsed.storedFields)) {
+      const docId = parsed.documentIds[shortId]
+      const post = posts.find(p => String(p.id) === String(docId))
+      if (post && Array.isArray(post.tags)) {
+        parsed.storedFields[shortId].tags = post.tags
+      }
     }
   }
   return JSON.stringify(parsed)

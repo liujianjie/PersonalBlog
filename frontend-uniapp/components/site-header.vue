@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ThemeToggle from './theme-toggle.vue'
+import SearchBox from './search-box.vue'
 
 function goHome() {
   uni.reLaunch({ url: '/pages/index/index' })
@@ -18,9 +19,7 @@ function goTags() {
       </view>
       <view class="actions">
         <text class="nav-link" @click="goTags">标签</text>
-        <view class="search-placeholder" title="Search lands in T10">
-          <text class="search-hint">⌕ search · coming in T10</text>
-        </view>
+        <SearchBox />
         <ThemeToggle />
       </view>
     </view>
@@ -81,19 +80,8 @@ function goTags() {
   color: var(--accent);
   background: var(--code-bg);
 }
-.search-placeholder {
-  font-size: 13px;
-  color: var(--muted);
-  border: 1px dashed var(--border);
-  border-radius: 6px;
-  padding: 4px 10px;
-}
-.search-hint {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
 @media (max-width: 640px) {
-  .brand-tag,
-  .search-placeholder {
+  .brand-tag {
     display: none;
   }
 }
