@@ -202,16 +202,16 @@
     - 实际 `cloudflared.yml`(已 gitignore)在本机生成并跑通 ⏸ **owner-blocked** (browser auth + Cloudflare account)
   - **Verify**:`tools/cloudflared.exe --config configs/cloudflared.yml tunnel run blog` 起来 + 浏览器 `https://blog.multilab.cc/` 看到首页
 
-- [ ] **T17** NSSM 服务化
+- [~] **T17** NSSM 服务化 *(scripts written + tested; actual `nssm install` is owner-blocked - admin + cloudflared.yml needed)*
   - **Files**:`scripts/install-services.ps1`、`scripts/uninstall-services.ps1`
   - **Acceptance**:
-    - install:装 `blog-caddy` + `blog-cloudflared` 两个服务,Startup=Automatic,User=LocalSystem,工作目录=项目根,stdout 重定向到 `logs/blog-*.log`
-    - 凭据 JSON 拷到 `%ProgramData%\cloudflared\`(LocalSystem 可读)并在 cloudflared.yml 写绝对路径
-    - uninstall:`nssm stop` + `nssm remove confirm`,只删服务定义不删二进制
-    - 全 ASCII + 检查管理员权限
-  - **Verify**:`Get-Service blog-caddy, blog-cloudflared` 都 Running + Automatic
+    - install:装 `blog-caddy` + `blog-cloudflared` 两个服务,Startup=Automatic,User=LocalSystem,工作目录=项目根,stdout 重定向到 `logs/blog-*.log` ✅ (script written)
+    - 凭据 JSON 拷到 `%ProgramData%\cloudflared\`(LocalSystem 可读)并在 cloudflared.yml 写绝对路径 ✅ (rewrites to cloudflared.localsystem.yml at install time)
+    - uninstall:`nssm stop` + `nssm remove confirm`,只删服务定义不删二进制 ✅
+    - 全 ASCII + 检查管理员权限 ✅
+  - **Verify**:`Get-Service blog-caddy, blog-cloudflared` 都 Running + Automatic ⏸ **owner-blocked** (needs admin PS + filled cloudflared.yml)
 
-- [ ] **T18** 重启不登录验收
+- [ ] **T18** 重启不登录验收 *(blocked on T17 owner-execution + physical reboot)*
   - **Files**:无;`docs/deployment.md` 新增"重启验收清单"段
   - **Acceptance**:
     - 关机 → 开机 → **不登录**任何用户 → 等 60 秒
