@@ -42,9 +42,29 @@ credentials-file: C:\Users\<YOUR_USERNAME>\.cloudflared\<YOUR_TUNNEL_UUID>.json
 # That's why the path is absolute, not %USERPROFILE%-based.
 
 ingress:
-  # Single host -> single origin. Caddy listens on http://127.0.0.1:48080
-  # (configs/Caddyfile). Cloudflare terminates TLS at the edge; the tunnel
-  # carries plain HTTP to the origin over the encrypted control channel.
+  # Single host -> single origin. Caddy listens via configs/Caddyfile
+  # (`http://:48080` bind-all). Cloudflare terminates TLS at the edge;
+  # the tunnel carries plain HTTP to the origin over the encrypted
+  # control channel.
+  #
+  # KNOWN ISSUE (cloudflared on Windows, verified across this project AND
+  # sibling project StockTradingAnalysis):
+  #   cloudflared on Windows cannot reach a loopback origin reliably -
+  #   tunnel returns "HTTP/2 200 + content-length: 0" for everything
+  #   while curl-against-loopback works fine. Both projects ended up
+  #   pointing cloudflared at the host's LAN IP. The standard 127.0.0.1
+  #   sample line is left here as documentation of the conventional
+  #   shape (per Cloudflare docs), but in practice replace it with the
+  #   machine's LAN IP at copy time:
+  #     service: http://<LAN_IP>:48080      # e.g. 192.168.x.y
+  #   Caddyfile's bind-all listener (`http://:48080`) already serves on
+  #   that IP, so no Caddy change needed.
+  #   Trade-off: LAN devices can hit Caddy directly bypassing Cloudflare.
+  #
+  #   Alternative (not tested here): keep 127.0.0.1, add originRequest
+  #   under the ingress entry to force HTTP/1.1 - may or may not work:
+  #     originRequest:
+  #       http2Origin: false
   - hostname: blog.multilab.cc
     service: http://127.0.0.1:48080
 
