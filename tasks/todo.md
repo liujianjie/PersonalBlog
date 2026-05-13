@@ -169,7 +169,7 @@
     - 全 ASCII
   - **Verify**:`powershell -ExecutionPolicy Bypass -File scripts/publish.ps1` 走完 → `site/index.html` + `site/feed.xml` + `site/search-index.json` 都在
 
-- [ ] **T14** Caddyfile
+- [x] **T14** Caddyfile
   - **Files**:`configs/Caddyfile`、`tasks/plan.md` 风险表更新(若发现新坑)
   - **Acceptance**:
     - bind `127.0.0.1:48080`(显式 IPv4,不暴露 LAN)
@@ -266,4 +266,4 @@
 | 4 本机部署 | 3 | ☐ |
 | 5 域名+服务 | 3 | ☐ |
 | 6 文档收官 | 4 | ☐ |
-| **总** | **22** | **13/22** |
+| **总** | **22** | **14/22** |

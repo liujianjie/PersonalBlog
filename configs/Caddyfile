@@ -1,0 +1,73 @@
+# Caddyfile - static host for the uniapp blog (T14)
+#
+# Listens on http://127.0.0.1:48080 ONLY (loopback IPv4, plain HTTP).
+#
+# Why explicit IPv4 + non-default port:
+#   - "localhost" on Windows can resolve to ::1 (IPv6) before 127.0.0.1, and
+#     Caddy by default binds dual-stack. cloudflared connects to whichever
+#     resolves first and sometimes mismatches (sibling project deployment Q5).
+#     127.0.0.1 forces IPv4.
+#   - 48080 avoids 8080 (Tomcat / Jenkins / dev servers all common on 8080).
+#
+# Why `http://` prefix on the address: Caddy v2 treats any non-:80 site
+# address as HTTPS by default and the listener does TLS handshake. Without
+# the scheme, plain-HTTP clients (cloudflared, curl) get HTTP 400
+# "Client sent an HTTP request to an HTTPS server".
+#
+# How to run (foreground, dev):
+#   tools\caddy.exe run --config configs\Caddyfile
+# Working dir = repo root, so `root * site` resolves to G:\...\PersonalBlog\site.
+
+{
+	# Global options
+	admin off
+	auto_https off
+}
+
+http://127.0.0.1:48080 {
+	root * site
+
+	encode zstd gzip
+
+	# Static-asset paths get strict serving: missing file -> real 404 (from
+	# file_server's default behavior). We split asset paths from SPA route
+	# paths so a stale image link doesn't silently render index.html bytes
+	# (which the browser would mis-render as a broken image with no log).
+	#
+	# Important: these MUST be two separate `handle` blocks, NOT a single
+	# `@matcher path /static/* /assets/*` with one handle. The named-matcher
+	# form interacts oddly with file_server and ends up returning 200 for
+	# missing files plus a corrupted Content-Type header.
+	handle /static/* {
+		file_server
+	}
+	handle /assets/* {
+		file_server
+	}
+
+	# Everything else: SPA history fallback for Vue Router. /post/12,
+	# /pages/post/post?id=12, /tag, etc. all land on /index.html and the
+	# client-side router takes over.
+	#
+	# Note on Content-Type charset: file_server's MIME detection on
+	# Windows returns "text/html; charset=utf-8", "text/xml; charset=utf-8",
+	# and "application/json" (no explicit charset, but JSON is UTF-8 per
+	# RFC 8259). All correct for our content. We deliberately do NOT
+	# override Content-Type via `header` directives - `application/rss+xml`
+	# trips Caddy's `+` parsing and corrupts the result.
+	handle {
+		try_files {path} /index.html
+		file_server
+	}
+
+	# Access log. logs/ is at repo root, gitignored. Service mode (NSSM)
+	# also redirects stdout, but having Caddy's structured access log is
+	# nicer for traffic-pattern debugging.
+	log {
+		output file logs/blog-caddy-access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+		format json
+	}
+}
