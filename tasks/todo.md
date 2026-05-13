@@ -231,7 +231,7 @@
     - 含:一次性激活(7 步)、日常发布(publish.ps1)、服务管理(start/stop/restart)、4 档验证、故障排查(对应 SPEC §9 风险表)、卸载流程
   - **Verify**:照抄能在另一台 Windows 机器重现部署(若有条件 dry-run)
 
-- [ ] **T20** 迁移笔记 + ADR
+- [x] **T20** 迁移笔记 + ADR
   - **Files**:`docs/migration-react-to-uniapp.md`、`docs/adr/001-uniapp-over-vue-spa.md`、`adr/002-caddy-over-fastapi-shell.md`、`adr/003-nssm-over-task-scheduler.md`
   - **Acceptance**:
     - 迁移笔记:React → Vue 组件映射、Tailwind → UnoCSS、react-markdown → marked、react-router → uni pages
