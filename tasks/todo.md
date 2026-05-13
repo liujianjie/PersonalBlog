@@ -161,7 +161,7 @@
 
 ## Phase 4 — 本机部署
 
-- [ ] **T13** publish.ps1
+- [x] **T13** publish.ps1
   - **Files**:`scripts/publish.ps1`
   - **Acceptance**:
     - 步骤:`pnpm build:h5` → `node gen-search-index` → `pwsh gen-feeds` → `robocopy dist/build/h5/ site/ /MIR`
@@ -266,4 +266,4 @@
 | 4 本机部署 | 3 | ☐ |
 | 5 域名+服务 | 3 | ☐ |
 | 6 文档收官 | 4 | ☐ |
-| **总** | **22** | **12/22** |
+| **总** | **22** | **13/22** |
