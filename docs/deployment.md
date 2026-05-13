@@ -49,12 +49,46 @@ modes, and Chinese-path images load. Expect "17/17 passed".
 
 If a check fails, screenshots are saved to `G:/tmp/blog-diag-prod/`.
 
-### Tier D - Tunnel works (Phase 5, not yet wired)
+### Tier D - Tunnel works (Phase 5, partially scaffolded)
 
 ```powershell
-# Will be: tools\cloudflared.exe --config configs\cloudflared.yml tunnel run blog
+# Run after the one-time activation below
+tools\cloudflared.exe --config configs\cloudflared.yml tunnel run blog
 # Then: open https://blog.multilab.cc/ in a browser away from this LAN.
 ```
+
+## One-time tunnel activation (T16; owner-operated)
+
+Cloudflare Tunnel requires browser-based account authorization, so this
+is interactive and not scriptable. Run once per machine. Run from the
+repo root in PowerShell.
+
+```powershell
+# 1. Authorize. Opens a browser; pick the multilab.cc zone.
+#    Drops cert.pem in %USERPROFILE%\.cloudflared\.
+tools\cloudflared.exe tunnel login
+
+# 2. Create the named tunnel. Writes credentials JSON to
+#    %USERPROFILE%\.cloudflared\<UUID>.json. Note the UUID.
+tools\cloudflared.exe tunnel create blog
+
+# 3. Fill in the two placeholders.
+copy configs\cloudflared.yml.sample configs\cloudflared.yml
+notepad configs\cloudflared.yml
+# Replace <YOUR_TUNNEL_UUID> and <YOUR_USERNAME>.
+
+# 4. Bind the public hostname to this tunnel (writes a CNAME to
+#    Cloudflare DNS for the multilab.cc zone).
+tools\cloudflared.exe tunnel route dns blog blog.multilab.cc
+
+# 5. Smoke test: start Caddy in one terminal, cloudflared in another.
+#    Then open https://blog.multilab.cc/ - should match :48080 exactly.
+tools\caddy.exe run --config configs\Caddyfile
+tools\cloudflared.exe --config configs\cloudflared.yml tunnel run blog
+```
+
+After this works, T17 (`scripts/install-services.ps1`) wraps the two
+processes as Windows services for reboot survival.
 
 ## Daily publish flow
 

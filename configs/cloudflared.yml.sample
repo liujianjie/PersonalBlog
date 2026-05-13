@@ -1,0 +1,59 @@
+# cloudflared.yml.sample - template for the named-tunnel config.
+#
+# DO NOT commit a filled-in copy of this file with real UUID/username -
+# configs/cloudflared.yml is .gitignored for that reason. The credentials
+# JSON (.cloudflared/<UUID>.json) is also tied to your account and must
+# never be checked in.
+#
+# One-time activation (run from the repo root, in PowerShell):
+#
+#   1. Authorize with Cloudflare (opens browser to pick the multilab.cc zone):
+#        tools\cloudflared.exe tunnel login
+#      Output: cert.pem dropped in C:\Users\<YOU>\.cloudflared\
+#
+#   2. Create the named tunnel "blog":
+#        tools\cloudflared.exe tunnel create blog
+#      Output: tunnel UUID + credentials JSON written to
+#        C:\Users\<YOU>\.cloudflared\<UUID>.json
+#
+#   3. Copy this file and fill the two placeholders:
+#        copy configs\cloudflared.yml.sample configs\cloudflared.yml
+#        notepad configs\cloudflared.yml
+#      Replace <YOUR_TUNNEL_UUID> and <YOUR_USERNAME>.
+#
+#   4. Bind the public hostname to this tunnel:
+#        tools\cloudflared.exe tunnel route dns blog blog.multilab.cc
+#
+#   5. Smoke-test (run Caddy first in another terminal):
+#        tools\cloudflared.exe --config configs\cloudflared.yml tunnel run blog
+#      Then in a browser: https://blog.multilab.cc/  (should match :48080)
+#
+# After this, scripts/install-services.ps1 (T17) installs the long-running
+# Windows service so the tunnel survives reboots.
+
+tunnel: <YOUR_TUNNEL_UUID>
+credentials-file: C:\Users\<YOUR_USERNAME>\.cloudflared\<YOUR_TUNNEL_UUID>.json
+
+# When NSSM runs cloudflared as LocalSystem, $USERPROFILE points to
+# C:\Windows\System32\config\systemprofile\, NOT to your user dir. The
+# install-services.ps1 script copies the credentials JSON to
+# %ProgramData%\cloudflared\ and rewrites the path above to:
+#   credentials-file: C:\ProgramData\cloudflared\<UUID>.json
+# That's why the path is absolute, not %USERPROFILE%-based.
+
+ingress:
+  # Single host -> single origin. Caddy listens on http://127.0.0.1:48080
+  # (configs/Caddyfile). Cloudflare terminates TLS at the edge; the tunnel
+  # carries plain HTTP to the origin over the encrypted control channel.
+  - hostname: blog.multilab.cc
+    service: http://127.0.0.1:48080
+
+  # Catch-all for any other hostname pointed at this tunnel: 404.
+  - service: http_status:404
+
+# Optional knobs (uncomment if you need them):
+# logfile: G:\workspace\AIProject\PersonalBlog\logs\blog-cloudflared.log
+# loglevel: info
+# protocol: http2          # default; "quic" sometimes faster on flaky networks
+# no-autoupdate: true      # required when running as a Windows service so
+#                          # NSSM doesn't get blindsided by a self-upgrade

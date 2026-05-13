@@ -193,13 +193,13 @@
 
 ## Phase 5 — 域名 + 服务化
 
-- [ ] **T16** cloudflared 配置 + 一次性激活
+- [~] **T16** cloudflared 配置 + 一次性激活 *(scaffolding done; actual `tunnel login` is owner-blocked - browser auth)*
   - **Files**:`configs/cloudflared.yml.sample`、`scripts/install-cloudflared.ps1`(若 T02 没含则补)、`docs/deployment.md`(激活步骤段)
   - **Acceptance**:
-    - sample 含占位 `<YOUR_TUNNEL_UUID>` / `<YOUR_USERNAME>`
-    - ingress 指 `http://127.0.0.1:48080`
-    - 注释列出五步激活:`tunnel login` → `tunnel create blog` → `copy yml.sample` → `tunnel route dns blog blog.multilab.cc` → `tunnel run blog`
-    - 实际 `cloudflared.yml`(已 gitignore)在本机生成并跑通
+    - sample 含占位 `<YOUR_TUNNEL_UUID>` / `<YOUR_USERNAME>` ✅
+    - ingress 指 `http://127.0.0.1:48080` ✅
+    - 注释列出五步激活:`tunnel login` → `tunnel create blog` → `copy yml.sample` → `tunnel route dns blog blog.multilab.cc` → `tunnel run blog` ✅ (also in docs/deployment.md)
+    - 实际 `cloudflared.yml`(已 gitignore)在本机生成并跑通 ⏸ **owner-blocked** (browser auth + Cloudflare account)
   - **Verify**:`tools/cloudflared.exe --config configs/cloudflared.yml tunnel run blog` 起来 + 浏览器 `https://blog.multilab.cc/` 看到首页
 
 - [ ] **T17** NSSM 服务化
