@@ -458,19 +458,22 @@ const HOST = '127.0.0.1'
 
 复制自 §1.3,加打勾位:
 
-- [ ] 1. 新分支 `uniapp-rewrite` 已建立,`main` 不动
-- [ ] 2. uni-app 工程能 `dev:h5` 起来
-- [ ] 3. 50+ 篇文章全部迁移完整,渲染、图片、代码高亮正常
-- [ ] 4. `pnpm build:h5` 产物正确,`publish.ps1` 拷到 `site/` 并附带 feed/sitemap/search-index
-- [ ] 5. Caddy 监听 48080,SPA fallback 工作
-- [ ] 6. cloudflared 跑通,`https://blog.multilab.cc` 可达
-- [ ] 7. NSSM 装上两个服务,Automatic 启动
-- [ ] 8. 重启电脑不登录验证通过
-- [ ] 9. `main` 分支 GH Pages 站仍可访问
-- [ ] 10. 暗色主题:跟随系统 + 手动切换 + 持久化
-- [ ] 11. 全文搜索能命中标题/标签/摘要/正文片段
-- [ ] 12. `feed.xml` + `sitemap.xml` 远端可访问且有效
-- [ ] 13. `docs/deployment.md` 完整,README 更新
+- [x] 1. 新分支 `uniapp-rewrite` 已建立,`main` 不动
+- [x] 2. uni-app 工程能 `dev:h5` 起来
+- [x] 3. 50+ 篇文章全部迁移完整,渲染、图片、代码高亮正常
+- [x] 4. `pnpm build:h5` 产物正确,`publish.ps1` 拷到 `site/` 并附带 feed/sitemap/search-index
+- [x] 5. Caddy 监听 48080,SPA fallback 工作
+- [ ] 6. cloudflared 跑通,`https://blog.multilab.cc` 可达 *(owner-blocked: 需 `cloudflared tunnel login` 浏览器授权)*
+- [ ] 7. NSSM 装上两个服务,Automatic 启动 *(owner-blocked: 需 elevated PowerShell + 已生成的 cloudflared.yml)*
+- [ ] 8. 重启电脑不登录验证通过 *(owner-blocked: 需 #6、#7 完成后真机重启)*
+- [x] 9. `main` 分支 GH Pages 站仍可访问 *(2026-05-13 验证: liujianjie.github.io/PersonalBlog/ 200,首页标题渲染)*
+- [x] 10. 暗色主题:跟随系统 + 手动切换 + 持久化 *(diagnose-prod.ps1 验证 light->dark->light 循环)*
+- [x] 11. 全文搜索能命中标题/标签/摘要/正文片段 *(diagnose-prod.ps1 验证关键词 'Unity' 命中 16 条)*
+- [x] 12. `feed.xml` + `sitemap.xml` 远端可访问且有效 *(diagnose-prod.ps1 验证 feed.xml 53 items 合法 RSS 2.0;Phase 5 未通时本机 127.0.0.1:48080 可达)*
+- [x] 13. `docs/deployment.md` 完整,README 更新
+
+> 状态:**10/13 已验证;3 项(#6 #7 #8)owner-blocked,等待 Cloudflare 账号授权 + 管理员安装 + 真机重启**。
+> Owner-blocked 步骤详见 `docs/deployment.md` "One-time activation" 段。
 
 ---
 

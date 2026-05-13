@@ -5,141 +5,149 @@
 > | 分支 | 技术栈 | 部署 | 访问入口 | 状态 |
 > |---|---|---|---|---|
 > | `main` | React 18 + Vite + Tailwind | GitHub Pages | https://liujianjie.github.io/PersonalBlog/ | 冻结(回退/对照用) |
-> | `uniapp-rewrite` | uni-app + Vue 3 + UnoCSS | 本机 Caddy + Cloudflare Tunnel | https://blog.multilab.cc/ | 主版本(开发中) |
+> | `uniapp-rewrite` | uni-app + Vue 3 + UnoCSS | 本机 Caddy + Cloudflare Tunnel | https://blog.multilab.cc/ | 主版本(当前活跃) |
 >
-> 重写方案、目录、决策见 [`SPEC.md`](./SPEC.md);实施计划见 [`tasks/plan.md`](./tasks/plan.md) + [`tasks/todo.md`](./tasks/todo.md)。
+> 本 README 现在描述 **`uniapp-rewrite` 分支**(主版本)的工作流。
+> 重写方案、目录、决策见 [`SPEC.md`](./SPEC.md);实施计划见
+> [`tasks/plan.md`](./tasks/plan.md) + [`tasks/todo.md`](./tasks/todo.md);
+> 部署运维见 [`docs/deployment.md`](./docs/deployment.md);React → uni-app
+> 迁移笔记见 [`docs/migration-react-to-uniapp.md`](./docs/migration-react-to-uniapp.md)。
+> 老 React 版本的 README/部署说明留在 [`main` 分支](https://github.com/liujianjie/PersonalBlog/tree/main)。
 
 ---
 
-一个使用 React + TypeScript + Tailwind CSS 构建的现代化个人博客网站。
+一个 uni-app(Vue 3) H5 个人博客,自托管在 `blog.multilab.cc`(本机 Caddy + Cloudflare Tunnel)。
 
 ## 特性
 
-- ✨ 现代化的 UI 设计
-- 📱 完全响应式，支持移动端
-- 🔍 文章搜索功能
-- 🏷️ 标签分类系统
-- 📝 Markdown 文章支持
-- 🎨 代码语法高亮
-- ⚡ 快速加载和流畅体验
+- 50+ 篇技术文章(Unity / OpenGL / Addressable / ProtoBuf 等)
+- 全文搜索(MiniSearch 客户端索引,无后端依赖)
+- 暗色主题:跟随系统 + 手动切换 + localStorage 持久化
+- 中文路径文章/图片自动 URL 编码
+- 代码块语法高亮(highlight.js)
+- RSS 2.0 + sitemap 自动生成,可订阅 `/static/feed.xml`
+- 一键 publish:`scripts/publish.ps1` 完成构建 + 索引 + 镜像
+- 服务化:NSSM 装两个 Windows 服务,**重启不登录** 自启
 
 ## 技术栈
 
-- **前端框架**: React 18
-- **类型系统**: TypeScript
-- **构建工具**: Vite
-- **样式方案**: Tailwind CSS
-- **路由管理**: React Router
-- **Markdown**: react-markdown
-- **代码高亮**: highlight.js
-- **日期处理**: date-fns
+- **前端**:uni-app 3.x + Vue 3.4 + TypeScript + Vite 5
+- **样式**:UnoCSS(Tailwind-like)+ CSS 变量
+- **Markdown**:marked + highlight.js
+- **搜索**:MiniSearch
+- **包管理**:pnpm
+- **静态托管**:Caddy v2(`tools/caddy.exe`)
+- **隧道**:Cloudflare Tunnel(`tools/cloudflared.exe`)
+- **服务化**:NSSM(`tools/nssm.exe`)
 
-## 快速开始
+## 快速开始(开发)
 
-### 安装依赖
+```powershell
+# 1. 装 pnpm + 装前端依赖
+npm i -g pnpm
+pnpm -C frontend-uniapp install
 
-```bash
-npm install
+# 2. 装三个二进制(caddy / cloudflared / nssm)到 tools/
+powershell -ExecutionPolicy Bypass -File scripts/install-binaries.ps1
+
+# 3. 起开发服务器
+pnpm -C frontend-uniapp dev:h5
+# 浏览器: http://localhost:5174
 ```
 
-### 开发模式
+## 加文章
 
-```bash
-npm run dev
+```powershell
+# 单篇
+powershell -ExecutionPolicy Bypass -File scripts/add-article.ps1 "F:\path\to\article.md"
+
+# 批量
+powershell -ExecutionPolicy Bypass -File scripts/batch-add-articles.ps1 -SourceDir "F:\path\to\articles\"
 ```
 
-访问 http://localhost:3000 查看网站
+脚本会自动:
+- 检测 GitHub 图片(保持原链接,不下载)
+- 复制本地图片到 `frontend-uniapp/static/images/...`
+- 中文路径 URL 编码(`HttpUtility.UrlEncode` + `+ -> %20`)
+- 更新 `frontend-uniapp/data/posts.ts` 元数据
 
-### 构建生产版本
+详情见 [`HOW_TO_ADD_POST.md`](./HOW_TO_ADD_POST.md) 和
+[`CLAUDE.md`](./CLAUDE.md) 的图片处理机制段。
 
-```bash
-npm run build
+## 发布到生产
+
+```powershell
+# 一键 publish:build + 索引 + RSS + sitemap + 镜像到 site/
+powershell -ExecutionPolicy Bypass -File scripts/publish.ps1
+
+# 自动验证 17 项(Caddy + Playwright 端到端)
+powershell -ExecutionPolicy Bypass -File scripts/diagnose-prod.ps1
 ```
 
-### 预览生产构建
+NSSM 管理的服务会自动 serve `site/` 的最新内容,**无需重启**。
+首次部署/服务管理见 [`docs/deployment.md`](./docs/deployment.md)。
 
-```bash
-npm run preview
+## 测试
+
+```powershell
+# 前端单元测试(86+ 个)
+pnpm -C frontend-uniapp test:unit
+
+# 类型检查
+pnpm -C frontend-uniapp typecheck
+
+# 端到端 Playwright(dev:h5)
+powershell -ExecutionPolicy Bypass -File scripts/diagnose.ps1
+
+# 端到端 Playwright(生产 build + Caddy)
+powershell -ExecutionPolicy Bypass -File scripts/diagnose-prod.ps1
 ```
 
-## 自定义内容
-
-### 修改博客信息
-
-编辑 `src/data/posts.ts` 文件：
-
-- 修改 `authorInfo` 对象来更新个人信息
-- 修改 `posts` 数组来添加、编辑或删除文章
-
-### 添加新文章
-
-在 `src/data/posts.ts` 的 `posts` 数组中添加新对象：
-
-```typescript
-{
-  id: '6',
-  title: '你的文章标题',
-  excerpt: '文章摘要',
-  content: `# 文章内容（支持Markdown）`,
-  date: '2024-03-26',
-  tags: ['标签1', '标签2'],
-  author: '作者名',
-  readTime: 5
-}
-```
-
-### 自定义样式
-
-- 修改 `tailwind.config.js` 来自定义主题颜色
-- 编辑 `src/index.css` 来调整全局样式
-
-## 项目结构
+## 目录结构
 
 ```
 PersonalBlog/
-├── public/              # 静态资源
-├── src/
-│   ├── components/      # React 组件
-│   │   ├── Header.tsx
-│   │   ├── Footer.tsx
-│   │   ├── PostCard.tsx
-│   │   ├── SearchBar.tsx
-│   │   └── TagList.tsx
-│   ├── pages/          # 页面组件
-│   │   ├── Home.tsx
-│   │   ├── PostDetail.tsx
-│   │   └── About.tsx
-│   ├── data/           # 数据文件
-│   │   └── posts.ts
-│   ├── types/          # TypeScript 类型定义
-│   │   └── index.ts
-│   ├── App.tsx         # 主应用组件
-│   ├── main.tsx        # 入口文件
-│   └── index.css       # 全局样式
-├── index.html
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── tailwind.config.js
+├── frontend-uniapp/        # 主前端(Vue 3 + uni-app)
+│   ├── data/posts.ts       # 文章元数据(50+ 篇)
+│   ├── pages/              # 路由(index / post / tag / search)
+│   ├── components/         # post-card / search-box / theme-toggle / site-header
+│   ├── composables/        # markdown / search / url-encode / tags
+│   ├── stores/theme.ts     # Pinia 主题 store
+│   ├── static/             # posts/<...>.md, images/<...>.png(中文路径)
+│   ├── scripts/            # uni-run.mjs / gen-search-index.mjs
+│   └── tests/unit/         # vitest
+├── configs/
+│   ├── Caddyfile           # 静态托管(127.0.0.1:48080 + SPA fallback)
+│   ├── cloudflared.yml.sample
+│   └── cloudflared.yml     # 实际配置(gitignored)
+├── scripts/
+│   ├── install-binaries.ps1
+│   ├── publish.ps1
+│   ├── install-services.ps1 / uninstall-services.ps1
+│   ├── diagnose.ps1 / diagnose-prod.ps1
+│   ├── add-article.ps1 / batch-add-articles.ps1
+│   └── gen-feeds.ps1
+├── tools/                  # caddy/cloudflared/nssm exe(gitignored)
+├── site/                   # Caddy 服务根(gitignored;publish.ps1 生成)
+├── logs/                   # 服务日志(gitignored)
+├── docs/
+│   ├── deployment.md       # 完整部署运维手册
+│   ├── migration-react-to-uniapp.md
+│   └── adr/                # 架构决策记录(uniapp / Caddy / NSSM)
+├── tasks/
+│   ├── plan.md             # 实施计划
+│   ├── todo.md             # ≤5 文件粒度任务
+│   └── diagnose-prod.py    # Playwright e2e 探针
+├── SPEC.md                 # 真相源(决策、风险、验收清单)
+└── CLAUDE.md               # 开发笔记 + 图片处理机制
 ```
-
-## 部署
-
-查看 [DEPLOYMENT.md](./DEPLOYMENT.md) 了解详细的部署指南。
-
-支持部署到：
-- Vercel
-- Netlify
-- GitHub Pages
-- 传统服务器
 
 ## License
 
 MIT
 
-## 联系方式
+## 反馈
 
-如有问题或建议，欢迎联系：
-
-- Email: your.email@example.com
-- GitHub: https://github.com/yourusername
+- GitHub Issues: https://github.com/liujianjie/PersonalBlog/issues
+- 老 React 版本(`main` 分支): https://liujianjie.github.io/PersonalBlog/
+- 当前主版本(`uniapp-rewrite` 分支): https://blog.multilab.cc/

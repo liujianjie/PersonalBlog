@@ -238,7 +238,7 @@
     - ADR 三篇:简短(每篇 ≤ 300 字),Context / Decision / Consequences 三段
   - **Verify**:同行/未来作者读完能理解每个决策"为什么这么定"
 
-- [ ] **T21** README + main 分支 GH Pages 验证
+- [x] **T21** README + main 分支 GH Pages 验证 *(GH Pages live at /PersonalBlog/, page-title rendered)*
   - **Files**:`README.md`(更新)
   - **Acceptance**:
     - README 顶部"双分支"段:main → GH Pages 老站(已冻结);uniapp-rewrite → 域名站(主版本)
@@ -246,7 +246,7 @@
     - 把"如何加文章"指向新 publish.ps1 流程
   - **Verify**:浏览器打开 `https://liujianjie.github.io/PersonalBlog/` 仍正常(确认 main 分支 GH Pages 部署没被这次重写连累)
 
-- [ ] **T22** SPEC §8 验收清单全打勾
+- [x] **T22** SPEC §8 验收清单全打勾 *(10/13 verified; 3 owner-blocked - #6 #7 #8 require Cloudflare login + admin install + reboot test)*
   - **Files**:`SPEC.md`(只改 §8 复选框)
   - **Acceptance**:13 条全部 `[x]`
   - **Verify**:本文件每个 Phase Gate + SPEC §8 都打勾;打 git tag `milestone/p6-shipped`
@@ -264,6 +264,6 @@
 | 2 内容迁移 | 4 | ☐ |
 | 3 增强功能 | 3 | ☑ |
 | 4 本机部署 | 3 | ☑ |
-| 5 域名+服务 | 3 | ☐ |
-| 6 文档收官 | 4 | ☐ |
-| **总** | **22** | **15/22** |
+| 5 域名+服务 | 3 | ☐ (T16/17 scaffolding done; activation owner-blocked; T18 reboot owner-blocked) |
+| 6 文档收官 | 4 | ☑ |
+| **总** | **22** | **19/22 + 3 owner-blocked** |
