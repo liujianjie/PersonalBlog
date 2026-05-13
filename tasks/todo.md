@@ -225,7 +225,7 @@
 
 ## Phase 6 — 文档 + 收官
 
-- [ ] **T19** docs/deployment.md
+- [x] **T19** docs/deployment.md
   - **Files**:`docs/deployment.md`
   - **Acceptance**:
     - 含:一次性激活(7 步)、日常发布(publish.ps1)、服务管理(start/stop/restart)、4 档验证、故障排查(对应 SPEC §9 风险表)、卸载流程
