@@ -335,26 +335,29 @@
 
 ### P2 — 第三方集成
 
-- [ ] **F5** giscus 评论
-  - **Files**:`pages/post/post.vue`(底部嵌入 giscus script)、`README.md`(说明 GitHub Discussions 启用步骤)
+- [x] **F5** giscus 评论 *(scaffolding done; activation owner-blocked)*
+  - **Files**:`composables/giscus.ts`(新)、`components/giscus-comments.vue`(新)、`pages/post/post.vue`(底部嵌入)、`README.md`(启用步骤段)、`tests/unit/giscus.spec.ts`(新 9)、`tests/unit/giscus-comments.spec.ts`(新 13)
+  - **结果**:✅ 22 新测试 + 160/160 全套、typecheck 0 error、build:h5 通过。giscus widget + 主题跟随 + SPA 切换 re-mount + 未配置时友好占位。
   - **Acceptance**:
-    - post 详情页底部加载 giscus widget,GitHub 账号可登录评论
-    - **owner-blocked**:仓库 `liujianjie/PersonalBlog` 需开启 Discussions + 装 giscus GitHub App + 在 giscus.app 配置生成 script 参数
-  - **Verify**:Playwright 抓 post 详情页的 giscus iframe 存在
+    - post 详情页底部加载 giscus widget,GitHub 账号可登录评论 ⏸ owner-blocked
+    - **owner-blocked**:仓库 `liujianjie/PersonalBlog` 需开启 Discussions + 装 giscus GitHub App + 在 giscus.app 配置生成 script 参数,然后填入 `composables/giscus.ts` 四个 `<YOUR_*>` 占位
+  - **Verify**:owner 填配置后 → `pnpm test:unit` 中 `isGiscusConfigured` 路径走 true 分支 → 浏览器 post 详情页底部出现 giscus iframe
 
-- [ ] **F6** Cloudflare Web Analytics
-  - **Files**:`index.html`(嵌入 CF beacon script)、`docs/deployment.md`(说明在 Cloudflare dashboard 启用步骤)
+- [x] **F6** Cloudflare Web Analytics *(scaffolding done; activation owner-blocked)*
+  - **Files**:`frontend-uniapp/index.html`(嵌入 guarded beacon loader)、`docs/deployment.md`(启用步骤段)、`tests/unit/cf-analytics.spec.ts`(新 9)
+  - **结果**:✅ 9 新测试 + 169/169 全套、typecheck 0 error、build:h5 通过、snippet 在 dist/build/h5/index.html 留存(3 处)。inline IIFE 在 `<CF_ANALYTICS_TOKEN>` 占位时短路,可安全 commit/ship dev。
   - **Acceptance**:
-    - `<script defer>` 嵌入 CF beacon
-    - **owner-blocked**:Cloudflare dashboard → Web Analytics → Add a site → multilab.cc(获取 token)
-  - **Verify**:F12 Network 看到 cloudflareinsights.com 请求成功
+    - `<script defer>` 嵌入 CF beacon ✅
+    - **owner-blocked**:Cloudflare dashboard → Web Analytics → Add a site → multilab.cc → 拿 token → 替换 `index.html` 中 `<CF_ANALYTICS_TOKEN>` 占位
+  - **Verify**:owner 填 token 后,F12 Network 看到 cloudflareinsights.com 请求 200 + dashboard 内分钟级出数
 
 ### P3 — 探索/调研(非阻塞)
 
-- [ ] **F7** GitHub blog skill / agent 调研
+- [x] **F7** GitHub blog skill / agent 调研
   - **Files**:`docs/blog-tooling-research.md`(新)
-  - **Acceptance**:列出 5-10 个有用的 frontend / blog 开发 skill / agent / library,每个一句话作用 + 是否值得集成
-  - **Verify**:用户读完能挑出想试的 1-2 个
+  - **结果**:✅ 13 项盘点(A 阅读体验 5 / B 作者工作流 5 / C 内容&SEO 3),按"收益/成本"倒序排出 3 个 F8 候选:KaTeX(数学公式)、lazy-load 图片、OG/Twitter Card。
+  - **Acceptance**:列出 5-10 个有用的 frontend / blog 开发 skill / agent / library,每个一句话作用 + 是否值得集成 ✅(13 项)
+  - **Verify**:用户读完能挑出想试的 1-2 个 → F8 候选清单已就绪
 
 - [ ] **F8** 移植其他 blog 1-2 个特性
   - **Files**:depend on F7
