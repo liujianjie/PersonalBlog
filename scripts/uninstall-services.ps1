@@ -33,9 +33,11 @@ foreach ($name in $names) {
         continue
     }
     Write-Host "[uninstall-services] stopping $name (was $($svc.Status))" -ForegroundColor Cyan
-    & $nssmExe stop $name confirm 2>$null | Out-Null
+    # Stop via cmd /c to avoid PS 5.x NativeCommandError when the service
+    # is already stopped (nssm prints to stderr in that case).
+    cmd /c "`"$nssmExe`" stop $name confirm >nul 2>&1"
     Write-Host "[uninstall-services] removing $name" -ForegroundColor Cyan
-    & $nssmExe remove $name confirm
+    cmd /c "`"$nssmExe`" remove $name confirm"
     if ($LASTEXITCODE -ne 0) { throw "nssm remove $name failed: $LASTEXITCODE" }
 }
 

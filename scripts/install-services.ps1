@@ -101,9 +101,14 @@ function Install-NssmService {
         [string] $StdoutLog,
         [string] $StderrLog
     )
-    # Remove existing (idempotent)
-    & $nssmExe stop $Name confirm 2>$null | Out-Null
-    & $nssmExe remove $Name confirm 2>$null | Out-Null
+    # Remove existing (idempotent). Use cmd /c so nssm's "Can't open service!"
+    # stderr stays inside cmd and doesn't surface as PowerShell 5.x's
+    # NativeCommandError ErrorRecord (which would trip $ErrorActionPreference
+    # = 'Stop'). On a fresh install the stop+remove are no-ops; on a re-install
+    # they tear down the old service definitions.
+    cmd /c "`"$nssmExe`" stop $Name confirm >nul 2>&1"
+    cmd /c "`"$nssmExe`" remove $Name confirm >nul 2>&1"
+    $global:LASTEXITCODE = 0
 
     Write-Host "[install-services] installing $Name" -ForegroundColor Cyan
     & $nssmExe install $Name $AppExe $AppArgs
