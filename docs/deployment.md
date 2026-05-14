@@ -279,3 +279,27 @@ PersonalBlog/
 - Task status: `tasks/todo.md`
 - Caddy v2 docs: https://caddyserver.com/docs/caddyfile
 - Cloudflare Tunnel docs: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+
+---
+
+## Cloudflare Web Analytics (F6 / SPEC §13.7 P2)
+
+`frontend-uniapp/index.html` ships a guarded beacon loader that no-ops
+while the `<CF_ANALYTICS_TOKEN>` placeholder is in place. Owner one-time
+activation:
+
+1. Cloudflare dashboard → **Web Analytics** → **Add a site** (or pick
+   the existing `multilab.cc` site if you already have one).
+2. Choose **Manual setup** when offered (you control the snippet).
+3. Copy the token (a hex string like `abcdef0123456789...`).
+4. Edit `frontend-uniapp/index.html` and replace `<CF_ANALYTICS_TOKEN>`
+   with that token. Commit + run `scripts/publish.ps1` to ship.
+5. Verify: open `https://blog.multilab.cc/` in a fresh browser tab,
+   F12 → Network, filter `cloudflareinsights` → expect a 200 from
+   `static.cloudflareinsights.com/beacon.min.js` plus a `POST` to the
+   beacon endpoint after first interaction. Stats land in the
+   Cloudflare dashboard within a few minutes.
+
+The token is only a site identifier (not a secret), so committing it is
+fine — but you can also keep it gitignored by patching `index.html`
+post-build inside `publish.ps1` if you prefer.

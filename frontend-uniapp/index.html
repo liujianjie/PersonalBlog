@@ -11,5 +11,22 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/main.ts"></script>
+    <!-- Cloudflare Web Analytics (F6 / SPEC §13.7 P2):
+         Owner activation: Cloudflare dashboard -> Web Analytics ->
+         Add a site -> multilab.cc -> copy the token, then replace
+         <CF_ANALYTICS_TOKEN> below with it. The inline guard
+         short-circuits while the placeholder is still present, so
+         this snippet is safe to commit and safe to ship to dev. -->
+    <script>
+      (function () {
+        var token = '<CF_ANALYTICS_TOKEN>'
+        if (token.indexOf('<CF_') === 0) return
+        var s = document.createElement('script')
+        s.defer = true
+        s.src = 'https://static.cloudflareinsights.com/beacon.min.js'
+        s.setAttribute('data-cf-beacon', JSON.stringify({ token: token }))
+        document.head.appendChild(s)
+      })()
+    </script>
   </body>
 </html>
