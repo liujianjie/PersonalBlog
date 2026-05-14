@@ -307,6 +307,74 @@
 
 ---
 
+## Phase 7 — 功能开发阶段(SPEC §13,2026-05-14 起)
+
+> SPEC §13 已 append。本阶段在 §1-§12 之外,扩展博客活跃使用所需功能。
+> 推荐执行顺序:P1 → P2 → P0(NSSM 服务化最后做,免反复重启服务)。
+
+### P1 — UI / 数据增强
+
+- [ ] **F1** 「关于我」页面
+  - **Files**:`frontend-uniapp/pages/about/about.vue`(新)、`pages.json`(加路由)、`components/site-header.vue`(顶栏加 link)
+  - **Acceptance**:
+    - `/pages/about/about` 可达,顶栏有「关于」按钮
+    - 含个人介绍 + GitHub 主页 link + 标签云(全 tag + 文章数)
+  - **Verify**:vitest 单测覆盖标签云聚合;手测访问
+
+- [ ] **F2** post-card tag chip 点击直接跳 `/tag/<name>`
+  - **Files**:`components/post-card.vue`
+  - **Acceptance**:每个 tag chip 是 link,点击 navigateTo 标签页
+
+- [ ] **F3** 顶级 `category` 字段
+  - **Files**:`types/index.ts`(Post 加 category)、`data/posts.ts`(全 53 篇默认 'tech')、`pages/category/category.vue`(新)、`pages.json`、`pages/index/index.vue`(顶部 tab)
+  - **Acceptance**:
+    - 首页顶部有 4 个 tab(tech/thought/life/learning),点击只显示该分类文章
+    - `/pages/category/category?name=tech` 单分类页
+    - 类型系统强制 category 必填(非可选)
+
+- [ ] **F4** 「合集」(series)字段
+  - **Files**:`types/index.ts`(Post 加 series? + seriesOrder?)、`data/posts.ts`(Addressable 系列加 series: 'Addressable'、LearnOpenGL 同理)、`pages/series/series.vue`(新)、`components/post-card.vue`(同 series 文章在首页归一卡片)
+  - **Acceptance**:
+    - `/pages/series/series?name=Addressable` 列出该系列文章按 seriesOrder 排
+    - 首页同 series 文章归一为一个合集卡片代表(避免淹没其他文章)
+    - 合集卡片显示文章数 + 链接到合集页
+
+### P2 — 第三方集成
+
+- [ ] **F5** giscus 评论
+  - **Files**:`pages/post/post.vue`(底部嵌入 giscus script)、`README.md`(说明 GitHub Discussions 启用步骤)
+  - **Acceptance**:
+    - post 详情页底部加载 giscus widget,GitHub 账号可登录评论
+    - **owner-blocked**:仓库 `liujianjie/PersonalBlog` 需开启 Discussions + 装 giscus GitHub App + 在 giscus.app 配置生成 script 参数
+  - **Verify**:Playwright 抓 post 详情页的 giscus iframe 存在
+
+- [ ] **F6** Cloudflare Web Analytics
+  - **Files**:`index.html`(嵌入 CF beacon script)、`docs/deployment.md`(说明在 Cloudflare dashboard 启用步骤)
+  - **Acceptance**:
+    - `<script defer>` 嵌入 CF beacon
+    - **owner-blocked**:Cloudflare dashboard → Web Analytics → Add a site → multilab.cc(获取 token)
+  - **Verify**:F12 Network 看到 cloudflareinsights.com 请求成功
+
+### P3 — 探索/调研(非阻塞)
+
+- [ ] **F7** GitHub blog skill / agent 调研
+  - **Files**:`docs/blog-tooling-research.md`(新)
+  - **Acceptance**:列出 5-10 个有用的 frontend / blog 开发 skill / agent / library,每个一句话作用 + 是否值得集成
+  - **Verify**:用户读完能挑出想试的 1-2 个
+
+- [ ] **F8** 移植其他 blog 1-2 个特性
+  - **Files**:depend on F7
+  - **Acceptance**:由 F7 输出决定;TBD
+
+### P0 — 收尾(SPEC §1-§12 旧任务)
+
+- [~] **T16-T18** 域名 + 服务化(原 Phase 5)
+  - 状态:T16/T17 scaffolding done(commit 5146b70 + fee02f2);T17 NSSM `nssm install` 需 elevated PowerShell + filled cloudflared.yml(已就绪);T18 物理重启验证
+
+> **Phase 7 Gate**:F1-F6 验收清单全过 + Cloudflare dashboard 看到流量数据
+
+---
+
 ## 进度速查
 
 | Phase | 任务数 | 状态 |
@@ -319,4 +387,5 @@
 | 5 域名+服务 | 3 | ☐ (T16/17 scaffolding done; activation owner-blocked; T18 reboot owner-blocked) |
 | 5-Hotfix loopback bug | 14 / 14 | ☑ (L05 中, 正向收尾 done) |
 | 6 文档收官 | 4 | ☑ |
-| **总** | **22 + 14** | **19/22 + 0/14 hotfix** |
+| 7 功能开发 | 8 | ☐ (F1-F6 待做, F7-F8 探索) |
+| **总** | **22 + 14 + 8** | **19/22 + 14/14 hotfix + 0/8 P7** |

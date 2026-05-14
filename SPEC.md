@@ -531,4 +531,181 @@ SPEC 已锁,§10 全部决策完毕。后续:
 
 ---
 
-*本文件接受 PR/Edit。改动需在 commit message 注明 "spec: §X.Y 更新 ..."*
+## 13. Phase 7 — 功能开发阶段(2026-05-14 起,§1-§12 之外)
+
+> §1-§12 描述「uniapp 重写 + 域名自托管」基础阶段(P0-P6,SPEC §8 19/22 完成)。
+> 本章追加「博客活跃使用阶段」的功能需求,**不替换** §1-§12,只覆盖 §7 中
+> 与本章冲突的少数决策。
+> 创建于 2026-05-14 · 触发 = 用户对当前博客的优化需求。
+
+### 13.1 决策修订(覆盖 §7)
+
+| # | 原 §7 决策 | 新决策 | 理由 |
+|---|---|---|---|
+| 1 | 评论系统 = Never | **做,用 giscus**(GitHub Issues 当后端) | 第三方零自建后端,跟「无后端」原则一致;访客用 GitHub 账号即可,不需要自建用户系统 |
+| 2 | 浏览量统计 = Never | **做,用 Cloudflare Web Analytics** | 免费 + 隐私友好(不跟 cookie)+ 已在 Cloudflare 账号下零集成成本 |
+| 3 | 顶级分类 = 不显式存在 | **新增 `category` 字段** | 内容范围从「纯技术」扩展到「思考/人生/学习」,需要顶级分流避免淹没技术文章 |
+
+§7 其他 Never 项保持不变:
+- 自建后端 / 数据库 / 用户系统(评论走 giscus 不算)
+- AI 摘要 / 自动标签
+- 多语言 / 国际化
+
+### 13.2 安全模型(NSSM 常开前回答的疑问)
+
+cloudflared tunnel 让 blog.multilab.cc 24/7 在线,但**不开任何入站端口**:
+
+```
+公网攻击者 → Cloudflare 边缘(WAF/抗 DDoS) → 加密隧道 → cloudflared
+   (出方向连接,你电脑没暴露) → http://127.0.0.1:48080 → Caddy → site/(只读)
+```
+
+攻击面:**Caddy 静态文件服务 + site/ 目录读取**。
+
+风险:
+- 你家路由器没端口转发 → 公网无法直连你电脑任何端口
+- Caddy bind 127.0.0.1 → LAN 设备无法直连
+- 没 /api、没 DB、没用户系统 → 没 SQLi / RCE / 越权
+- Caddy v2 已知零 RCE,极低概率被打穿;最坏后果 = site/ 全部被读(本来就要公开)
+- cloudflared ingress 只允许 `127.0.0.1:48080` → 攻击者拿不到其他端口
+
+需自己注意:
+- Cloudflare 账号 2FA + 强密码 + 不复用
+- ingress 永远只暴露 Caddy(不要加 `localhost:其他端口`)
+- Caddy root 永远是 `site/`(不要改成系统目录)
+
+**结论:可以 NSSM 常开**。
+
+### 13.3 功能清单(P 优先级)
+
+#### P0 — 收尾原 SPEC §8(blocker)
+
+- T17 NSSM 服务化(原计划)
+- T18 重启不登录验证(原计划)
+- 这俩跟 §13 功能开发**互不阻塞**——可在前台 Caddy/cloudflared 模式下做功能,最后再服务化
+
+#### P1 — 立即可做的 UI/数据增强
+
+| F | 功能 | 复杂度 |
+|---|---|---|
+| F1 | 「关于我」页面(个人介绍 + GitHub 主页 + 标签云) | 半小时 |
+| F2 | post-card 上 tag chip 点击直接跳 `/tag/<name>` | 半小时(若未做) |
+| F3 | 顶级 `category` 字段 + 首页 tab + `/category/:name` 路由 | 2-3 小时 |
+| F4 | 「合集」(series)字段 + `/series/:name` 页 + 同合集文章在合集页归一,首页显示合集卡片 | 3-4 小时 |
+
+#### P2 — 第三方集成(零自建)
+
+| F | 功能 | 集成方式 |
+|---|---|---|
+| F5 | giscus 评论 | `<script>` 嵌入 post 详情页底部,需在 GitHub 仓库开 Discussions + 装 giscus app |
+| F6 | Cloudflare Web Analytics | `<script>` 嵌入 `index.html`,Cloudflare dashboard 配 multilab.cc 域名 |
+
+#### P3 — 探索/调研(非阻塞)
+
+| F | 功能 |
+|---|---|
+| F7 | GitHub 上的 blog skill / agent 调研列表 (我做,产出 markdown 报告) |
+| F8 | 参考其他 blog(Astro Paper / Hexo Fluid 等)抽 1-2 个特性移植 |
+
+### 13.4 数据模型变化
+
+`frontend-uniapp/types/index.ts` `Post` 新增字段:
+
+```typescript
+export interface Post {
+  // ... existing fields ...
+
+  /** 顶级分类。每篇文章必须有一个 category。 */
+  category: 'tech' | 'thought' | 'life' | 'learning';
+
+  /** 可选:文章合集名,例如 'Addressable'、'OpenGL 入门'。
+   *  同 series 的文章在 /series/<name> 页归一展示,首页只显示合集卡片代表。 */
+  series?: string;
+
+  /** 可选:在合集内的顺序(1-based)。用于排序与下一篇导航。 */
+  seriesOrder?: number;
+}
+```
+
+`data/posts.ts` 迁移:
+- 全部 53 篇现有文章默认 `category: 'tech'`
+- Addressable 系列(7-8 篇)添加 `series: 'Addressable'`
+- LearnOpenGL 系列(若有 ≥3 篇)添加 `series: 'LearnOpenGL'`
+- 其他长系列同理
+
+### 13.5 Tech stack 增量
+
+§2 的栈不动。新增**仅嵌入式**集成:
+
+- **giscus**:`<script src="https://giscus.app/client.js" ...>` 嵌入 post 详情页;需仓库 `liujianjie/PersonalBlog` 开 Discussions + 装 giscus GitHub App
+- **Cloudflare Web Analytics**:`<script defer src='https://static.cloudflareinsights.com/beacon.min.js' ...>` 嵌入 index.html
+
+不引入:
+- npm 包(评论 / 统计相关)
+- 后端进程(Python / Node)
+- 数据库
+
+### 13.6 不在范围(Phase 7)
+
+- 自建评论后端(走 giscus,不再 ask first)
+- 自建统计后端(走 CF Analytics,不再 ask first)
+- 多语言 / 国际化
+- 多用户(博主以外的写作权限)
+- 离线阅读 PWA
+- 全文 RSS(已有 feed.xml,扩展即可)
+- 把图片仓库 `liujianjie/Image` 本地化(独立任务,跟功能开发互不影响)
+
+### 13.7 Definition of Done(本阶段验收清单)
+
+§1.3 13 条仍生效。本阶段追加:
+
+- [ ] 14. 「关于我」页面可达(`/pages/about/about` 或类似),含个人介绍 + GitHub 链接 + 标签云
+- [ ] 15. post-card 上每个 tag 是 link,点击跳 `/tag/<name>`
+- [ ] 16. 顶级 category 工作:首页有 tab,`/category/<name>` 路由可达,文章按分类筛选
+- [ ] 17. 合集 series 工作:`/series/<name>` 页列出该系列文章,首页同系列文章归一为合集卡片(避免淹没其他文章)
+- [ ] 18. giscus 评论在每篇 post 详情页底部加载,GitHub 账号可登录评论
+- [ ] 19. Cloudflare Web Analytics 在 dashboard 看到 multilab.cc 流量数据(等 24h 后验证)
+
+### 13.8 边界
+
+#### Always
+- 评论审核全部走 GitHub Discussions(giscus 不引入额外审核中间件)
+- category 字段必填,不允许 null/undefined
+- series 改名 = 改文章数据 + URL,不做自动重定向(不上线超过 1 个月的合集才有这个风险)
+- 新功能不破坏 SPEC §1-§12 已通过的 8 个 Phase Gate
+
+#### Ask First
+- giscus 之外的第三方 widget(如 mailing list / disqus / 推特卡片)
+- 任何会让 cloudflared.yml ingress 超过 1 条 origin 的需求
+- 任何引入 npm `dependencies`(非 `devDependencies`)的需求
+
+#### Never
+- 自建评论 / 用户登录(除 giscus 走的 GitHub OAuth)
+- 自建后端进程
+- 收集 PII(IP、邮箱、地理位置等)
+- 把 GitHub Issues / Discussions 内容自动同步到本仓库(单向只读)
+
+### 13.9 风险
+
+| 风险 | 影响 | 缓解 |
+|---|---|---|
+| giscus 依赖 GitHub Discussions API,GitHub 限流或下线 | 评论加载失败 | giscus script 加载失败时 post 详情页正常显示,只是底部空一块;不阻塞主体内容 |
+| Cloudflare Web Analytics 加载阻塞页面 | 首屏延迟 | `<script defer>` 异步加载,不阻塞 |
+| category 字段加完后老 GH Pages 站(`main` 分支)不识别 | main 分支 site 还能跑 | main 分支冻结的是 React 版,跟 uniapp 不共享 posts.ts;互不影响 |
+| 第三方脚本(giscus + CF beacon)被广告屏蔽插件拦 | 评论 / 统计在部分访客失效 | 两者都是非阻塞,功能 degrade 而非 broken;可接受 |
+
+### 13.10 与原 SPEC 章节的关系
+
+- §1-§6,§8-§11 全部生效,不动
+- §7 三条决策被本章 §13.1 修订(评论 / 统计 / 顶级分类)
+- §12 下一步指向 §13,即 plan/todo 进入 Phase 7
+
+### 13.11 下一步
+
+1. 进入 `agent-skills:plan` → 把 §13.3 P0-P3 拆成 Phase 7 的实施计划,append 到 `tasks/plan.md`
+2. 进入 `agent-skills:planning-and-task-breakdown` → 拆 ≤5 文件的可实施任务,append 到 `tasks/todo.md` Phase 7 段
+3. 决定 P0(NSSM 服务化收尾)跟 P1-P2 的执行顺序:推荐 **先做 P1-P2 内容功能,最后再 P0** —— 内容期可在前台模式下迭代;最后一次服务化省得反复重启服务
+
+---
+
+*§13 接受 PR/Edit。改动需在 commit message 注明 "spec: §13.X 更新 ..."*
