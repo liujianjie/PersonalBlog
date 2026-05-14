@@ -46,10 +46,41 @@ function Step {
 # Sanity: required tooling
 $psExe = (Get-Command powershell.exe -ErrorAction SilentlyContinue).Source
 if (-not $psExe) { throw 'powershell.exe not on PATH' }
+
+# Find node. Try PATH first; if not there, probe common install locations
+# (nvm-windows, official MSI, LOCALAPPDATA, scoop). Some shells (especially
+# fresh PowerShell sessions on machines using nvm-windows) don't inherit
+# the user PATH that has nodejs in it.
 $nodeExe = (Get-Command node -ErrorAction SilentlyContinue).Source
-if (-not $nodeExe) { throw 'node not on PATH (install Node.js >= 18)' }
+if (-not $nodeExe) {
+    $candidates = @(
+        (Join-Path $env:ProgramFiles 'nodejs\node.exe'),
+        'C:\nvm4w\nodejs\node.exe',
+        (Join-Path $env:LOCALAPPDATA 'Programs\nodejs\node.exe'),
+        (Join-Path $env:USERPROFILE 'scoop\apps\nodejs\current\node.exe'),
+        (Join-Path $env:USERPROFILE 'scoop\shims\node.exe')
+    )
+    foreach ($c in $candidates) {
+        if ($c -and (Test-Path $c)) { $nodeExe = $c; break }
+    }
+}
+if (-not $nodeExe) {
+    throw 'node not found on PATH or common install paths (install Node.js >= 18)'
+}
+
 $robocopyExe = (Get-Command robocopy -ErrorAction SilentlyContinue).Source
 if (-not $robocopyExe) { throw 'robocopy not on PATH (Windows built-in)' }
+
+# Ensure the node binary's directory is on PATH for child processes.
+# uni-run.mjs spawns uni.CMD (a batch wrapper) which calls `node` via the
+# inherited environment - if Node was installed via nvm-windows or another
+# manager that only updates the user PATH, the spawned cmd.exe won't see
+# it. Prepending here is idempotent and propagates to grandchildren.
+$nodeDir = Split-Path -Parent $nodeExe
+if (($env:PATH -split ';') -notcontains $nodeDir) {
+    $env:PATH = "$nodeDir;$env:PATH"
+}
+Write-Host "[publish] node      = $nodeExe"
 
 Write-Host "[publish] root      = $root"
 Write-Host "[publish] frontend  = $frontDir"
