@@ -23,6 +23,12 @@
       "style": {
         "navigationBarTitleText": "Search"
       }
+    },
+    {
+      "path": "pages/about/about",
+      "style": {
+        "navigationBarTitleText": "About"
+      }
     }
   ],
   "globalStyle": {

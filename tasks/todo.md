@@ -314,12 +314,10 @@
 
 ### P1 — UI / 数据增强
 
-- [ ] **F1** 「关于我」页面
-  - **Files**:`frontend-uniapp/pages/about/about.vue`(新)、`pages.json`(加路由)、`components/site-header.vue`(顶栏加 link)
-  - **Acceptance**:
-    - `/pages/about/about` 可达,顶栏有「关于」按钮
-    - 含个人介绍 + GitHub 主页 link + 标签云(全 tag + 文章数)
-  - **Verify**:vitest 单测覆盖标签云聚合;手测访问
+- [x] **F1** 「关于我」页面
+  - **Files**:`frontend-uniapp/pages/about/about.vue`(新)、`pages.json`(加路由)、`components/site-header.vue`(顶栏加 link)、`composables/author.ts`(新)、`tests/unit/author.spec.ts`(新)、`tests/unit/about-page.spec.ts`(新)
+  - **结果**:✅ TDD 通过(7 个 about/author 测试 + 全套 98/98)、typecheck 0 error、build 通过
+  - **后续**:`composables/author.ts` 里的 name / bio / homepageNote 用户可自行编辑文案
 
 - [ ] **F2** post-card tag chip 点击直接跳 `/tag/<name>`
   - **Files**:`components/post-card.vue`

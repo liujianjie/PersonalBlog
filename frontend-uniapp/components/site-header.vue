@@ -8,6 +8,9 @@ function goHome() {
 function goTags() {
   uni.navigateTo({ url: '/pages/tag/tag' })
 }
+function goAbout() {
+  uni.navigateTo({ url: '/pages/about/about' })
+}
 </script>
 
 <template>
@@ -19,6 +22,7 @@ function goTags() {
       </view>
       <view class="actions">
         <text class="nav-link" @click="goTags">标签</text>
+        <text class="nav-link" @click="goAbout">关于</text>
         <SearchBox />
         <ThemeToggle />
       </view>
