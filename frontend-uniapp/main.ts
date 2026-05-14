@@ -3,6 +3,7 @@ import { createPinia } from 'pinia'
 import 'virtual:uno.css'
 import './styles/theme.css'
 import './styles/hljs.css'
+import 'katex/dist/katex.min.css'
 import App from './App.vue'
 
 export function createApp() {

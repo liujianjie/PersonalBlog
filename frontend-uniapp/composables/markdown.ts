@@ -1,11 +1,17 @@
 import { Marked } from 'marked'
 import hljs from 'highlight.js'
+import markedKatex from 'marked-katex-extension'
 import { urlEncodePath } from './url-encode'
 
 const marked = new Marked({
   gfm: true,
   breaks: false
 })
+
+// KaTeX (F8): inline `$...$` and block `$$...$$`. throwOnError keeps a
+// bad expression from blowing up the whole page; katex emits a red
+// error span instead.
+marked.use(markedKatex({ throwOnError: false }))
 
 marked.use({
   renderer: {

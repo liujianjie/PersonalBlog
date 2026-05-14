@@ -359,9 +359,11 @@
   - **Acceptance**:列出 5-10 个有用的 frontend / blog 开发 skill / agent / library,每个一句话作用 + 是否值得集成 ✅(13 项)
   - **Verify**:用户读完能挑出想试的 1-2 个 → F8 候选清单已就绪
 
-- [ ] **F8** 移植其他 blog 1-2 个特性
-  - **Files**:depend on F7
-  - **Acceptance**:由 F7 输出决定;TBD
+- [x] **F8** 移植其他 blog 1-2 个特性 — KaTeX 数学公式
+  - **Files**:`composables/markdown.ts`(`marked.use(markedKatex({throwOnError:false}))`)、`main.ts`(import `katex/dist/katex.min.css`)、`package.json` + `pnpm-lock.yaml`(katex + marked-katex-extension)、`tests/unit/katex.spec.ts`(新 6)
+  - **结果**:✅ 6 新测试 + 175/175 全套、typecheck 0 error、build:h5 通过。inline `$a^2+b^2=c^2$` + block `$$\int_0^1 x^2 dx$$` 全跑。
+  - **F7 推荐**:候选 #1 KaTeX(✅ 本任务)+ #2 lazy-load 图片(已早在 T07 ship,markdown.spec line 46 锁住,不再动)+ #3 OG / Twitter Card(留 F9)
+  - **Verify**:任一含 `$...$` 的文章详情页底图渲染数学公式;quirks-mode 警告仅在 happy-dom 测试环境(生产 index.html 已 `<!DOCTYPE html>`)
 
 ### P0 — 收尾(SPEC §1-§12 旧任务)
 
