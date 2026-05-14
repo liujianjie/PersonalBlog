@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import SiteHeader from '@/components/site-header.vue'
+import GiscusComments from '@/components/giscus-comments.vue'
 import { posts } from '@/data/posts'
 import { renderMarkdown } from '@/composables/markdown'
 import type { Post } from '@/types'
@@ -77,6 +78,7 @@ async function loadContent(p: Post) {
           </view>
         </header>
         <view class="markdown-body" v-html="html" />
+        <GiscusComments :term="post.id" />
       </article>
     </view>
   </view>

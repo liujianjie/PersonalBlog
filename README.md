@@ -146,6 +146,27 @@ PersonalBlog/
 
 MIT
 
+## 评论 (giscus) 启用步骤
+
+post 详情页底部已嵌入 giscus widget,默认渲染"评论功能尚未启用"占位。
+**owner 一次性激活**(参数全是公开 id,可进 git):
+
+1. 打开 `https://github.com/liujianjie/PersonalBlog/settings` → **General** →
+   勾选 **Discussions** → 拉到底部 Save。
+2. 装 giscus GitHub App:`https://github.com/apps/giscus` → **Install**,
+   只授权 `liujianjie/PersonalBlog`(或全仓亦可)。
+3. 打开 `https://giscus.app/zh-CN`,按提示填:
+   - 仓库:`liujianjie/PersonalBlog`
+   - 页面 ↔ 讨论 映射:**Discussion title contains page <specific term>**
+   - 讨论分类:**General**(也可在 Discussions 下新建 `Comments` 类别)
+   - 选好后页面会生成 `data-repo-id` / `data-category-id` 两个值。
+4. 编辑 `frontend-uniapp/composables/giscus.ts`,把四个 `<YOUR_*>` 占位换成
+   真实值(repo / repoId / category / categoryId),保存。
+5. `pnpm -C frontend-uniapp test:unit`(确保 `isGiscusConfigured()` 返回 true)
+   → `powershell -ExecutionPolicy Bypass -File scripts/publish.ps1`(发布)。
+
+**验证**:浏览器打开任一 post 详情,底部能看到 giscus 评论框,GitHub 账号可登录评论。
+
 ## 反馈
 
 - GitHub Issues: https://github.com/liujianjie/PersonalBlog/issues
