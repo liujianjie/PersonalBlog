@@ -1,30 +1,25 @@
 # Caddyfile - static host for the uniapp blog (T14)
 #
-# Listens on http://:48080 — bind-all (loopback + every active LAN IP).
+# Listens on http://127.0.0.1:48080 ONLY (loopback IPv4, plain HTTP).
 #
-# Why bind-all instead of an explicit IP pair like
-# `http://127.0.0.1:48080, http://<LAN_IP>:48080`:
-#   1. Tested 2026-05-13: the explicit-pair form failed to serve from
-#      the browser on Windows (operator reported the site was
-#      unreachable while Caddy did start). `http://:48080` always works.
-#      The dual-listener path seems to interact badly with Windows'
-#      IPv4/IPv6 dual-stack socket behavior. Don't fight it - use the
-#      form that works.
-#   2. DHCP can change the LAN IP at any time. Hard-coding it here means
-#      the file rots; bind-all stays correct.
-#   3. The LAN IP belongs to the operator's machine; not committing it
-#      keeps the repo clean of personal-machine state.
+# Why explicit IPv4 + non-default port:
+#   - "localhost" on Windows can resolve to ::1 (IPv6) before 127.0.0.1, and
+#     Caddy by default binds dual-stack. cloudflared connects to whichever
+#     resolves first and sometimes mismatches.
+#     127.0.0.1 forces IPv4.
+#   - 48080 avoids 8080 (Tomcat / Jenkins / dev servers all common on 8080).
+#   - Loopback-only (vs bind-all `http://:48080`) keeps LAN devices from
+#     bypassing Cloudflare HTTPS. We tried bind-all on 2026-05-13 as a
+#     workaround for the cloudflared 0-byte loopback bug; the real fix
+#     turned out to be `originRequest.http2Origin: false` in cloudflared.yml
+#     (forces HTTP/1.1 between cloudflared and origin, avoiding the buggy
+#     h2-to-h1 auto-fallback in cloudflared 2026.3.x on Windows). With that
+#     fix in place, loopback-only is safe and preferable.
 #
-# Trade-off (same as any bind-all): any LAN device can reach
-# http://<this-machine-LAN-IP>:48080/ directly, bypassing Cloudflare HTTPS.
-# Acceptable for a home network; revisit if box ever joins an untrusted one.
-#
-# Why `http://` scheme prefix is required: Caddy v2 treats any non-:80
-# site address as HTTPS by default and the listener does TLS handshake.
-# Without it plain-HTTP clients (cloudflared, curl) get 400 "HTTP request
-# to HTTPS server".
-#
-# 48080 avoids 8080 (Tomcat / Jenkins / dev servers all common on 8080).
+# Why `http://` prefix on the address: Caddy v2 treats any non-:80 site
+# address as HTTPS by default and the listener does TLS handshake. Without
+# the scheme, plain-HTTP clients (cloudflared, curl) get HTTP 400
+# "Client sent an HTTP request to an HTTPS server".
 #
 # How to run (foreground, dev):
 #   tools\caddy.exe run --config configs\Caddyfile
@@ -36,15 +31,10 @@
 	auto_https off
 }
 
-http://:48080 {
+http://127.0.0.1:48080 {
 	root * site
 
 	encode zstd gzip
-	# (Earlier disabled while debugging the "content-length: 0 through
-	# tunnel" issue. Re-enabled after confirming the root cause was
-	# cloudflared's loopback origin handling, not compression - see the
-	# header comment block. Cloudflare's edge re-compresses for clients
-	# anyway, so leaving this on costs ~nothing and helps direct LAN curls.)
 
 	# Static-asset paths get strict serving: missing file -> real 404 (from
 	# file_server's default behavior). We split asset paths from SPA route

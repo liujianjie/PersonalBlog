@@ -138,3 +138,63 @@
 进入 `agent-skills:planning-and-task-breakdown` → `tasks/todo.md`(已生成)。
 
 按 todo 顺序执行,每完成一个 task 把 `[ ]` 改 `[x]` 并 commit;Phase gate 不过则在该 Phase 内补任务。
+
+---
+
+## 8. Phase 5-Hotfix — cloudflared 0-byte loopback bug(2026-05-14 增补)
+
+### 8.1 背景
+
+T16 期间发现:`cloudflared 2026.3.0` + `service: http://127.0.0.1:48080`
++ Caddy 明文 origin → tunnel 返回 `HTTP/2 200 + content-length: 0`,而
+`curl http://127.0.0.1:48080/` 直接命中 Caddy 是正常 719 字节。
+
+当前用 `service: http://<LAN_IP>:48080` workaround 通了,但带来:
+- LAN 内任何设备能直连 Caddy,绕过 Cloudflare HTTPS
+- DHCP 改 IP 配置失效
+
+本 hotfix 目标:**让 service 回到 127.0.0.1**(官方推荐做法)。
+
+### 8.2 已知事实(调研产出)
+
+- **官方推荐**:[Cloudflare Tunnel local-management config](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/configure-tunnels/local-management/configuration-file/) 所有示例都是 `localhost:port` / `127.0.0.1:port`,**不是公网 IP**
+- **公网 IP 不能用**:违背 tunnel 设计 + 你家未必有真公网 IP + 多跳 NAT
+- **GitHub 已知类似 issue**:[#1641 gRPC stripped](https://github.com/cloudflare/cloudflared/issues/1641)、[#1505 Home Assistant invalid](https://github.com/cloudflare/cloudflared/issues/1505),都未公开 fix
+- **兄弟项目 StockTradingAnalysis 同样问题**:sample 写 127.0.0.1,实际配置也用 LAN IP→ **不是 Caddy 特定 bug,是 cloudflared on Windows 通病**
+- 当前环境:cloudflared 2026.3.0、Caddy v2 latest、Win10 19045
+
+### 8.3 假设与对应 fix(按置信度)
+
+| # | 假设 | 对应 fix |
+|---|---|---|
+| H1 | cloudflared 默认走 HTTP/2 跟 origin,Caddy 明文只 H1,降级有 bug | `originRequest.http2Origin: false` |
+| H2 | Windows happy-eyeballs:::1 抢先但握手失败 | `originRequest.noHappyEyeballs: true` |
+| H3 | chunked encoding 协商不合 | `originRequest.disableChunkedEncoding: true` |
+| H4 | 2026.3.0 特定 bug,新版本修了 | 升级 cloudflared |
+| H5 | tunnel protocol 路径有 bug | 改 `protocol: quic` |
+
+### 8.4 阶段依赖
+
+```
+A 数据收集(read-only)→ B 按代价试 fix → C 收尾(正向 or 回退)
+```
+
+### 8.5 Checkpoint
+
+| Phase | Gate |
+|---|---|
+| A | 抓到 cloudflared `--loglevel debug` 日志、对比 LAN IP vs 127.0.0.1 两份 |
+| B | service 回 127.0.0.1 + 某 originRequest 配置 → curl 非 0 字节 |
+| C-正向 | sample/yml/Caddyfile/docs 一致;e2e 17/17;commit |
+| C-回退 | LAN IP 正式 documented + 写 ADR-004 + sample 默认 LAN IP |
+
+### 8.6 退出条件
+
+**首选**:127.0.0.1 + 最小 originRequest 工作,Caddy 也回 loopback only,LAN 不可达。
+**回退**:全 fix 失败,接受 LAN IP 为本项目标准,写 ADR 解释。
+
+### 8.7 时间盒
+
+最多 **2 小时**。超出走回退路径。
+
+详见 `tasks/todo.md` Phase 5-Hotfix 段。

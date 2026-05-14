@@ -223,6 +223,58 @@
 
 ---
 
+## Phase 5-Hotfix — cloudflared 0-byte loopback bug(2026-05-14 增补)
+
+> T16 期间发现 cloudflared 2026.3.0 + 127.0.0.1 origin → "HTTP/2 200 +
+> content-length: 0"。当前用 LAN IP workaround 通了,目标是回 127.0.0.1。
+> 详细背景/假设/退出条件见 `tasks/plan.md` 第 8 章。
+> 时间盒:**2 小时**。超出走回退路径(L11A-E)。
+
+### A 数据收集(read-only,不改配置)
+
+> **跳过** — 用户选了"只试 L05"路径,直接进 Phase B。
+
+- [~] **L01** 抓 cloudflared debug log(LAN IP 当前配置) *(skipped)*
+- [~] **L02** 抓 cloudflared debug log(127.0.0.1 配置) *(skipped)*
+- [~] **L03** 检查实际 socket 类型 *(skipped)*
+- [~] **L04** 检查 cloudflared 是否有更新 *(skipped)*
+
+### B 按代价由低到高试 fix(每次只改一项,失败回滚)
+
+- [x] **L05** Fix B1:`originRequest.http2Origin: false` + service 回 127.0.0.1
+  - **结果**:✅ **首试即中**。curl https://blog.multilab.cc/ → content-length > 0,feed.xml 28968 bytes (== 本机),search-index.json 111512,JS 165307。
+  - **机制**:cloudflared 默认尝试 HTTP/2 跟 origin 通信,Caddy 明文 listener 只支持 HTTP/1.1("HTTP/2 skipped because it requires TLS"),cloudflared 2026.3.x 的 h2→h1 auto-fallback 在某些 Windows 路径下丢 response body。强制 HTTP/1.1 origin 跳过 buggy 的 fallback 路径。
+
+- [~] **L06** Fix B2:加 `noHappyEyeballs: true` *(skipped, L05 中)*
+- [~] **L07** Fix B3:加 `disableChunkedEncoding: true` *(skipped, L05 中)*
+- [~] **L08** Fix B4:升级 cloudflared *(skipped, L05 中)*
+- [~] **L09** Fix B5:cloudflared.yml 顶级加 `protocol: quic` *(skipped, L05 中)*
+
+> **Phase B Gate**:✅ L05 通过,127.0.0.1 + http2Origin: false 工作
+
+### C-正向 收尾(找到了让 127.0.0.1 work 的 fix)
+
+- [x] **L10A** 把生效 fix 写进 `cloudflared.yml.sample` 默认配置
+- [x] **L10B** 实际 `cloudflared.yml`:service 改回 127.0.0.1 + 加 fix(gitignored,本机生效)
+- [x] **L10C** Caddyfile:`http://:48080` → `http://127.0.0.1:48080`(关 LAN 暴露)
+- [x] **L10D** `docs/deployment.md` 故障排查行更新(写真正的 fix,不是 LAN IP 绕路)
+- [ ] **L10E** e2e:用户重启 Caddy 后 → curl 验证 + 浏览器开 https://blog.multilab.cc/
+- [ ] **L10F** commit + 提示 push
+
+### C-回退 收尾(B 全失败,接受 LAN IP)
+
+> **未启用** — L05 首试即中,无需走回退路径。
+
+- [~] **L11A** *(n/a)*
+- [~] **L11B** *(n/a)*
+- [~] **L11C** *(n/a)*
+- [~] **L11D** ADR-004 不写(回退路径未启用)
+- [~] **L11E** *(n/a)*
+
+> **Phase 5-Hotfix Gate**:正向路径走完 → sample/yml/Caddyfile/docs 一致 ✅
+
+---
+
 ## Phase 6 — 文档 + 收官
 
 - [x] **T19** docs/deployment.md
@@ -265,5 +317,6 @@
 | 3 增强功能 | 3 | ☑ |
 | 4 本机部署 | 3 | ☑ |
 | 5 域名+服务 | 3 | ☐ (T16/17 scaffolding done; activation owner-blocked; T18 reboot owner-blocked) |
+| 5-Hotfix loopback bug | 12 / 14 | ☑ (L10E + L10F 待用户重启 Caddy) |
 | 6 文档收官 | 4 | ☑ |
-| **总** | **22** | **19/22 + 3 owner-blocked** |
+| **总** | **22 + 14** | **19/22 + 0/14 hotfix** |
