@@ -35,6 +35,12 @@
       "style": {
         "navigationBarTitleText": "Category"
       }
+    },
+    {
+      "path": "pages/series/series",
+      "style": {
+        "navigationBarTitleText": "Series"
+      }
     }
   ],
   "globalStyle": {

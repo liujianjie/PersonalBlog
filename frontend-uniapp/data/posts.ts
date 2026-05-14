@@ -10,6 +10,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 8,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 15,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（15）构建布局报告、常见问题总结（分组压缩策略）.md'
   },
   {
@@ -21,6 +23,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 7,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 14,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（14）事件查看窗口、分析窗口.md'
   },
   {
@@ -32,6 +36,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 9,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 13,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（13）自定义更新目录和下载AB包、引用计数规则.md'
   },
   {
@@ -43,6 +49,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 10,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 12,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle.md'
   },
   {
@@ -54,6 +62,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 12,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 11,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（11）资源更新.md'
   },
   {
@@ -65,6 +75,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 8,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 10,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（10）资源打包加载（远端）.md'
   },
   {
@@ -76,6 +88,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 8,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 9,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（9）资源打包理论与本地应用.md'
   },
   {
@@ -87,6 +101,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 6,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 8,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（8）Addressable Hosting可寻址托管窗口配置.md'
   },
   {
@@ -98,6 +114,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 7,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 7,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（7）Packed Assets打包资源数据配置.md'
   },
   {
@@ -109,6 +127,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 7,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 6,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（6）AddressableAssetSettings数据设置_参数相关.md'
   },
   {
@@ -120,6 +140,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 6,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 5,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（5）Profile概述窗口配置.md'
   },
   {
@@ -131,6 +153,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 6,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 4,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（4）动态加载单个、多个资源.md'
   },
   {
@@ -142,6 +166,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 5,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 3,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（3）指定资源加载、标签.md'
   },
   {
@@ -153,6 +179,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 6,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 2,
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（2）寻址资源设置.md'
   },
   {
@@ -164,6 +192,8 @@ export const posts: Post[] = [
     author: '博主',
     readTime: 5,
     category: 'tech',
+    series: 'Addressable',
+    seriesOrder: 1,
     mdFile: '/static/posts/游戏开发/Unity/Addressable/Addressable（1）导入Addressable.md'
   },
   {

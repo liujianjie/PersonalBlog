@@ -8,6 +8,7 @@ import {
   CATEGORY_LABELS,
   getAllCategories
 } from '@/composables/categories'
+import { collapseSeriesFeed, type FeedItem } from '@/composables/series'
 import type { PostCategory } from '@/types'
 
 /** Active category filter. 'all' = no filter (show every post). */
@@ -15,19 +16,31 @@ const activeCategory = ref<PostCategory | 'all'>('all')
 
 const categories = computed(() => getAllCategories())
 
-const filtered = computed(() => {
-  const base = activeCategory.value === 'all'
-    ? posts
-    : posts.filter((p) => p.category === activeCategory.value)
-  return [...base].sort((a, b) =>
-    a.date < b.date ? 1 : a.date > b.date ? -1 : 0
-  )
+/** Feed items: collapsed-by-series for 'all', plain post list for a
+ *  specific category (so series collapse only happens on the home view). */
+const feed = computed<FeedItem[]>(() => {
+  if (activeCategory.value === 'all') {
+    return collapseSeriesFeed()
+  }
+  return posts
+    .filter((p) => p.category === activeCategory.value)
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+    .map((p) => ({ kind: 'post' as const, post: p }))
 })
 
-const totalLabel = computed(() => `${filtered.value.length} 篇文章`)
+const totalLabel = computed(() => {
+  const items = feed.value.length
+  return `${items} 项`
+})
 
 function selectCategory(c: PostCategory | 'all') {
   activeCategory.value = c
+}
+
+function openSeries(name: string) {
+  uni.navigateTo({
+    url: `/pages/series/series?name=${encodeURIComponent(name)}`
+  })
 }
 </script>
 
@@ -61,11 +74,27 @@ function selectCategory(c: PostCategory | 'all') {
         </view>
       </view>
 
-      <view v-if="filtered.length === 0" class="empty">
+      <view v-if="feed.length === 0" class="empty">
         <text>该分类下暂无文章。</text>
       </view>
       <view v-else class="grid">
-        <PostCard v-for="p in filtered" :key="p.id" :post="p" />
+        <template v-for="(it, idx) in feed" :key="idx">
+          <PostCard v-if="it.kind === 'post'" :post="it.post" />
+          <view
+            v-else
+            class="series-card"
+            @click="openSeries(it.name)"
+          >
+            <view class="series-tag">合集</view>
+            <h2 class="series-card-name">{{ it.name }}</h2>
+            <p class="series-card-summary">{{ it.representative.excerpt }}</p>
+            <view class="series-card-meta">
+              <text class="series-count">{{ it.count }} 篇</text>
+              <text class="series-dot">·</text>
+              <text class="series-latest">最新 {{ it.representative.date }}</text>
+            </view>
+          </view>
+        </template>
       </view>
     </view>
   </view>
@@ -163,5 +192,68 @@ function selectCategory(c: PostCategory | 'all') {
   .grid {
     grid-template-columns: 1fr;
   }
+}
+
+.series-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+  position: relative;
+}
+.series-card:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+}
+.series-tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--accent);
+  background: var(--bg);
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--accent);
+}
+.series-card-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--fg);
+  padding-right: 60px;
+  line-height: 1.4;
+}
+.series-card-summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.series-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.series-count {
+  font-weight: 600;
+  color: var(--accent);
+}
+.series-dot {
+  opacity: 0.6;
 }
 </style>

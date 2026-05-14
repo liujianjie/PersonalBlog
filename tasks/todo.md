@@ -327,12 +327,11 @@
   - **结果**:✅ TDD 通过(12 个 categories 测试,53 篇全 category=tech)、114/114 全套、typecheck 0 error、build 通过
   - **DoD §13.7 #16**:✅ 首页 5 tab(全部 + 4 分类)、`/pages/category/category?name=tech` 单分类页可达
 
-- [ ] **F4** 「合集」(series)字段
-  - **Files**:`types/index.ts`(Post 加 series? + seriesOrder?)、`data/posts.ts`(Addressable 系列加 series: 'Addressable'、LearnOpenGL 同理)、`pages/series/series.vue`(新)、`components/post-card.vue`(同 series 文章在首页归一卡片)
-  - **Acceptance**:
-    - `/pages/series/series?name=Addressable` 列出该系列文章按 seriesOrder 排
-    - 首页同 series 文章归一为一个合集卡片代表(避免淹没其他文章)
-    - 合集卡片显示文章数 + 链接到合集页
+- [x] **F4** 「合集」(series)字段
+  - **Files**:`data/posts.ts`(15 篇 Addressable 加 series + seriesOrder)、`composables/series.ts`(新)、`pages/series/series.vue`(新,合集索引 + 单合集页两态)、`pages/index/index.vue`(改用 collapseSeriesFeed 归一)、`pages.json`、`tests/unit/series.spec.ts`(新)
+  - **结果**:✅ TDD 通过(15 个 series 测试)、129/129 全套、typecheck 0 error、build 通过
+  - **DoD §13.7 #17**:✅ 首页 Addressable 15 篇归一为一个合集卡片(代表 = 最新一篇),`/pages/series/series` 列出所有合集,`/pages/series/series?name=Addressable` 按 seriesOrder 1-15 排序
+  - **范围**:本次只标 Addressable;LearnOpenGL 32 篇 + 其他系列**待后续手动加** series 字段(不阻塞,数据增量,UI 已就绪)
 
 ### P2 — 第三方集成
 
