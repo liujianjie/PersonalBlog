@@ -258,8 +258,8 @@
 - [x] **L10B** 实际 `cloudflared.yml`:service 改回 127.0.0.1 + 加 fix(gitignored,本机生效)
 - [x] **L10C** Caddyfile:`http://:48080` → `http://127.0.0.1:48080`(关 LAN 暴露)
 - [x] **L10D** `docs/deployment.md` 故障排查行更新(写真正的 fix,不是 LAN IP 绕路)
-- [ ] **L10E** e2e:用户重启 Caddy 后 → curl 验证 + 浏览器开 https://blog.multilab.cc/
-- [ ] **L10F** commit + 提示 push
+- [x] **L10E** e2e:用户重启 Caddy 后 → curl 三档验证全过(本机 200/719 + LAN refused + tunnel 200/1638)
+- [x] **L10F** commit + 提示 push
 
 ### C-回退 收尾(B 全失败,接受 LAN IP)
 
@@ -317,6 +317,6 @@
 | 3 增强功能 | 3 | ☑ |
 | 4 本机部署 | 3 | ☑ |
 | 5 域名+服务 | 3 | ☐ (T16/17 scaffolding done; activation owner-blocked; T18 reboot owner-blocked) |
-| 5-Hotfix loopback bug | 12 / 14 | ☑ (L10E + L10F 待用户重启 Caddy) |
+| 5-Hotfix loopback bug | 14 / 14 | ☑ (L05 中, 正向收尾 done) |
 | 6 文档收官 | 4 | ☑ |
 | **总** | **22 + 14** | **19/22 + 0/14 hotfix** |
