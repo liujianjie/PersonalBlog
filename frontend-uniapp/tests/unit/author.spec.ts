@@ -24,8 +24,11 @@ describe('getSocialLinks', () => {
     const links = getSocialLinks()
     for (const l of links) {
       expect(l.label).toBeTruthy()
-      // href is either http(s) URL or a same-origin path starting with /
-      expect(l.href).toMatch(/^(https?:\/\/|\/)/)
+      // href can be:
+      //   - http(s):// URL
+      //   - mailto:address (email link)
+      //   - same-origin path starting with /
+      expect(l.href).toMatch(/^(https?:\/\/|mailto:|\/)/)
     }
   })
 
