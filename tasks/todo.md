@@ -322,12 +322,10 @@
 - [x] **F2** post-card tag chip 点击直接跳 `/tag/<name>`
   - **结果**:✅ 行为早在 T08 已实现(`post-card.vue` line 13-16);F2 工作 = 加 4 项 regression test 锁死(`tests/unit/post-card.spec.ts`)。stopPropagation + 跳转 + @click 绑定 + 卡片级 @click 区分。
 
-- [ ] **F3** 顶级 `category` 字段
-  - **Files**:`types/index.ts`(Post 加 category)、`data/posts.ts`(全 53 篇默认 'tech')、`pages/category/category.vue`(新)、`pages.json`、`pages/index/index.vue`(顶部 tab)
-  - **Acceptance**:
-    - 首页顶部有 4 个 tab(tech/thought/life/learning),点击只显示该分类文章
-    - `/pages/category/category?name=tech` 单分类页
-    - 类型系统强制 category 必填(非可选)
+- [x] **F3** 顶级 `category` 字段
+  - **Files**:`types/index.ts`(Post 加 category 必填 + PostCategory union)、`data/posts.ts`(53 篇全加 `category: 'tech'`)、`composables/categories.ts`(新)、`pages/category/category.vue`(新)、`pages/index/index.vue`(顶部 5 个 tab)、`pages.json`、`tests/unit/categories.spec.ts`(新)
+  - **结果**:✅ TDD 通过(12 个 categories 测试,53 篇全 category=tech)、114/114 全套、typecheck 0 error、build 通过
+  - **DoD §13.7 #16**:✅ 首页 5 tab(全部 + 4 分类)、`/pages/category/category?name=tech` 单分类页可达
 
 - [ ] **F4** 「合集」(series)字段
   - **Files**:`types/index.ts`(Post 加 series? + seriesOrder?)、`data/posts.ts`(Addressable 系列加 series: 'Addressable'、LearnOpenGL 同理)、`pages/series/series.vue`(新)、`components/post-card.vue`(同 series 文章在首页归一卡片)

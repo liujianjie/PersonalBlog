@@ -9,6 +9,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（15）构建布局报告、常见问题总结（分组压缩策略）.md'
   },
   {
@@ -19,6 +20,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（14）事件查看窗口、分析窗口.md'
   },
   {
@@ -29,6 +31,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 9,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（13）自定义更新目录和下载AB包、引用计数规则.md'
   },
   {
@@ -39,6 +42,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 10,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（12）根据资源定位信息加载资源、几种加载Addressable方式、Async Operation Handle.md'
   },
   {
@@ -49,6 +53,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 12,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（11）资源更新.md'
   },
   {
@@ -59,6 +64,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（10）资源打包加载（远端）.md'
   },
   {
@@ -69,6 +75,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（9）资源打包理论与本地应用.md'
   },
   {
@@ -79,6 +86,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（8）Addressable Hosting可寻址托管窗口配置.md'
   },
   {
@@ -89,6 +97,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（7）Packed Assets打包资源数据配置.md'
   },
   {
@@ -99,6 +108,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（6）AddressableAssetSettings数据设置_参数相关.md'
   },
   {
@@ -109,6 +119,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（5）Profile概述窗口配置.md'
   },
   {
@@ -119,6 +130,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（4）动态加载单个、多个资源.md'
   },
   {
@@ -129,6 +141,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 5,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（3）指定资源加载、标签.md'
   },
   {
@@ -139,6 +152,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressbale/Taikr/CSDN博客Addressable/Addressable（2）寻址资源设置.md'
   },
   {
@@ -149,6 +163,7 @@ export const posts: Post[] = [
     tags: ['Unity', 'Addressable', '游戏开发'],
     author: '博主',
     readTime: 5,
+    category: 'tech',
     mdFile: '/static/posts/游戏开发/Unity/Addressable/Addressable（1）导入Addressable.md'
   },
   {
@@ -159,6 +174,7 @@ export const posts: Post[] = [
     tags: ['博客', '随笔'],
     author: '博主',
     readTime: 3,
+    category: 'tech',
     content: `# 欢迎来到我的博客
 
 大家好！欢迎来到我的个人博客。
@@ -207,6 +223,7 @@ const techStack = {
     tags: ['React', 'JavaScript', '前端开发'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     content: `# React Hooks 最佳实践
 
 React Hooks 自 16.8 版本引入以来，已经成为 React 开发的标准方式。本文将分享一些使用 Hooks 的最佳实践。
@@ -299,6 +316,7 @@ Happy coding! 🚀
     tags: ['TypeScript', '前端开发', '进阶'],
     author: '博主',
     readTime: 10,
+    category: 'tech',
     content: `# TypeScript 类型体操实战
 
 TypeScript 的类型系统非常强大，本文将通过实际案例展示一些高级类型技巧。
@@ -419,6 +437,7 @@ TypeScript 的类型系统功能强大，掌握这些技巧可以：
     tags: ['性能优化', '前端开发', 'Web'],
     author: '博主',
     readTime: 12,
+    category: 'tech',
     content: `# 前端性能优化指南
 
 性能是用户体验的重要组成部分。本文将介绍前端性能优化的各种策略。
@@ -588,6 +607,7 @@ window.addEventListener('load', () => {
     tags: ['Git', '工具', '团队协作'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     content: `# Git 工作流最佳实践
 
 Git 是现代软件开发不可或缺的工具。本文分享一些实用的 Git 工作流程和技巧。
@@ -760,6 +780,7 @@ git revert <commit>
     tags: ['OpenGL', 'GLSL', '计算机图形学'],
     author: '博主',
     readTime: 3,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-0.GLSL命名格式.md'
   },
   {
@@ -770,6 +791,7 @@ git revert <commit>
     tags: ['OpenGL', 'GLFW', '计算机图形学'],
     author: '博主',
     readTime: 5,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.1-3窗口.md'
   },
   {
@@ -780,6 +802,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学'],
     author: '博主',
     readTime: 4,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.10复习.md'
   },
   {
@@ -790,6 +813,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学', '渲染'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.4.三角形.md'
   },
   {
@@ -800,6 +824,7 @@ git revert <commit>
     tags: ['OpenGL', 'GLSL', '着色器'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.5着色器.md'
   },
   {
@@ -810,6 +835,7 @@ git revert <commit>
     tags: ['OpenGL', '纹理', '计算机图形学'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.6纹理.md'
   },
   {
@@ -820,6 +846,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学', '数学'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.7变换.md'
   },
   {
@@ -830,6 +857,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学', '坐标系统'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.8坐标系统.md'
   },
   {
@@ -840,6 +868,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学', '摄像机'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-1.9摄像机.md'
   },
   {
@@ -850,6 +879,7 @@ git revert <commit>
     tags: ['OpenGL', '计算机图形学', '光照'],
     author: '博主',
     readTime: 4,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.1颜色.md'
   },
   {
@@ -860,6 +890,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', 'Phong'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.2基础光照.md'
   },
   {
@@ -870,6 +901,7 @@ git revert <commit>
     tags: ['OpenGL', '材质', '光照'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.3.材质.md'
   },
   {
@@ -880,6 +912,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', '纹理'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.4.光照贴图.md'
   },
   {
@@ -890,6 +923,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', '光源'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.5.投光物.md'
   },
   {
@@ -900,6 +934,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', '多光源'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.6.多光源.md'
   },
   {
@@ -910,6 +945,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', '计算机图形学'],
     author: '博主',
     readTime: 5,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-2.7.复习.md'
   },
   {
@@ -920,6 +956,7 @@ git revert <commit>
     tags: ['OpenGL', 'Assimp', '模型加载'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-3.1Assimp.md'
   },
   {
@@ -930,6 +967,7 @@ git revert <commit>
     tags: ['OpenGL', 'Mesh', '模型'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-3.2Mesh.md'
   },
   {
@@ -940,6 +978,7 @@ git revert <commit>
     tags: ['OpenGL', '模型加载', 'Assimp'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-3.3模型加载.md'
   },
   {
@@ -950,6 +989,7 @@ git revert <commit>
     tags: ['OpenGL', '实例化', '性能优化'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.10实例化.md'
   },
   {
@@ -960,6 +1000,7 @@ git revert <commit>
     tags: ['OpenGL', '抗锯齿', 'MSAA'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.11抗锯齿.md'
   },
   {
@@ -970,6 +1011,7 @@ git revert <commit>
     tags: ['OpenGL', '深度测试', '计算机图形学'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.1深度测试.md'
   },
   {
@@ -980,6 +1022,7 @@ git revert <commit>
     tags: ['OpenGL', '模板测试', '特效'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.2模板测试.md'
   },
   {
@@ -990,6 +1033,7 @@ git revert <commit>
     tags: ['OpenGL', '混合', '透明'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.3混合.md'
   },
   {
@@ -1000,6 +1044,7 @@ git revert <commit>
     tags: ['OpenGL', '面剔除', '性能优化'],
     author: '博主',
     readTime: 5,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.4面剔除.md'
   },
   {
@@ -1010,6 +1055,7 @@ git revert <commit>
     tags: ['OpenGL', '帧缓冲', '后处理'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.5帧缓冲.md'
   },
   {
@@ -1020,6 +1066,7 @@ git revert <commit>
     tags: ['OpenGL', '天空盒', '立方体贴图'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.6.天空盒.md'
   },
   {
@@ -1030,6 +1077,7 @@ git revert <commit>
     tags: ['OpenGL', '缓冲对象', '高级技术'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.7高级数据.md'
   },
   {
@@ -1040,6 +1088,7 @@ git revert <commit>
     tags: ['OpenGL', 'GLSL', '着色器'],
     author: '博主',
     readTime: 7,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.8高级GLSL.md'
   },
   {
@@ -1050,6 +1099,7 @@ git revert <commit>
     tags: ['OpenGL', '几何着色器', 'GLSL'],
     author: '博主',
     readTime: 8,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-4.9几何着色器.md'
   },
   {
@@ -1060,6 +1110,7 @@ git revert <commit>
     tags: ['OpenGL', '光照', 'Blinn-Phong'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-5.1高级光照-blinn.md'
   },
   {
@@ -1070,6 +1121,7 @@ git revert <commit>
     tags: ['OpenGL', 'Gamma校正', '颜色空间'],
     author: '博主',
     readTime: 6,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/计算机图形学/LearnOpenGL/LearnOpenGL-5.2Gamma校正.md'
   },
   {
@@ -1080,6 +1132,7 @@ git revert <commit>
     tags: ['Unity', 'ProtoBuf', '序列化', '工具链'],
     author: '博主',
     readTime: 12,
+    category: 'tech',
     mdFile: '/static/posts/temp_import/0.编写文档/Unity/Unity-ProtoBuf自定义生成规则及编译dll与Exe.md'
   }
 ];

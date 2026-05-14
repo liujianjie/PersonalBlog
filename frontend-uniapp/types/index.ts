@@ -1,3 +1,6 @@
+/** Top-level content category. Each post must have exactly one. */
+export type PostCategory = 'tech' | 'thought' | 'life' | 'learning';
+
 export interface Post {
   id: string;
   title: string;
@@ -9,6 +12,17 @@ export interface Post {
   author: string;
   readTime: number; // 阅读时间（分钟）
   coverImage?: string;
+
+  /** Required from SPEC §13.4 onwards. Defaults to 'tech' for legacy posts. */
+  category: PostCategory;
+
+  /** Optional series name (e.g. 'Addressable', 'LearnOpenGL') for grouping
+   *  multi-part posts. Posts in the same series collapse to one card on
+   *  the home page; the series page lists them by seriesOrder. */
+  series?: string;
+
+  /** 1-based order within the series. Used to sort the series page. */
+  seriesOrder?: number;
 }
 
 export interface Author {

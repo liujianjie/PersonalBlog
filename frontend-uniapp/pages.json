@@ -29,6 +29,12 @@
       "style": {
         "navigationBarTitleText": "About"
       }
+    },
+    {
+      "path": "pages/category/category",
+      "style": {
+        "navigationBarTitleText": "Category"
+      }
     }
   ],
   "globalStyle": {
