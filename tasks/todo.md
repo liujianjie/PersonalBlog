@@ -386,5 +386,5 @@
 | 5 域名+服务 | 3 | ☐ (T16/17 scaffolding done; activation owner-blocked; T18 reboot owner-blocked) |
 | 5-Hotfix loopback bug | 14 / 14 | ☑ (L05 中, 正向收尾 done) |
 | 6 文档收官 | 4 | ☑ |
-| 7 功能开发 | 8 | ☐ (F1-F6 待做, F7-F8 探索) |
-| **总** | **22 + 14 + 8** | **19/22 + 14/14 hotfix + 0/8 P7** |
+| 7 功能开发 | 8 | ☑ (F1-F8 全 done; F5/F6 owner 激活; F7 推荐 → F8 接 KaTeX) |
+| **总** | **22 + 14 + 8** | **19/22 + 14/14 hotfix + 8/8 P7** |
