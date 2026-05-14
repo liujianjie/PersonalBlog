@@ -36,6 +36,7 @@ Dialogue
 tools/*.exe
 # 凭据(P0 密钥铁律 — 绝不入仓)
 configs/cloudflared.yml
+configs/cloudflared.localsystem.yml
 .cloudflared/
 # 构建产物
 frontend-uniapp/dist/
