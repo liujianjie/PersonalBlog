@@ -1,0 +1,31 @@
+ Step 1：Cloudflare 授权（浏览器交互，~2 min）
+  tools\cloudflared.exe tunnel login
+  tools\cloudflared.exe tunnel create blog
+  copy configs\cloudflared.yml.sample configs\cloudflared.yml
+  notepad configs\cloudflared.yml          # 把 <YOUR_TUNNEL_UUID> 和 <YOUR_USERNAME> 填实
+  tools\cloudflared.exe tunnel route dns blog blog.multilab.cc
+
+  # Step 2：smoke test 一次（确认 tunnel + Caddy 配合正确，~3 min）
+  # 开两个 PowerShell 窗口分别跑：
+  tools\caddy.exe run --config configs\Caddyfile
+  tools\cloudflared.exe --config configs\cloudflared.yml tunnel run blog
+  # 浏览器开 https://blog.multilab.cc/，看到首页就 Ctrl-C 停掉两个进程
+
+  # Step 3：装 NSSM 服务（管理员 PowerShell，~1 min）
+  # 右键 PowerShell → 以管理员身份运行
+  powershell -ExecutionPolicy Bypass -File scripts/install-services.ps1
+  Get-Service blog-caddy, blog-cloudflared
+  # 期望两个都 Running + StartType=Automatic
+
+  # Step 4：重启验证（~5 min）
+  # 关机 → 开机 → 不登录 → 等 60 秒 → 手机 4G 打开 https://blog.multilab.cc/
+
+  验收清单怎么收尾
+
+  干完上面 4 步后回来告诉我"通了"，我把 SPEC §8 的 #6 #7 #8 全打勾、tasks/todo.md 收尾、打个 milestone/p6-shipped git tag——5 分钟搞定。
+
+  如果中途某步出问题，把报错贴过来，我按 docs/deployment.md 的故障排查表帮你定位。
+
+  如果你今天不想动手
+
+  完全 OK——目前的状态是"博客在 127.0.0.1:48080 本机完整工作（17/17 e2e 全过），只差最后一步暴露公网"。可以先放着，等下次有空再走 4 步收尾。
