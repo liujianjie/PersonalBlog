@@ -319,9 +319,8 @@
   - **结果**:✅ TDD 通过(7 个 about/author 测试 + 全套 98/98)、typecheck 0 error、build 通过
   - **后续**:`composables/author.ts` 里的 name / bio / homepageNote 用户可自行编辑文案
 
-- [ ] **F2** post-card tag chip 点击直接跳 `/tag/<name>`
-  - **Files**:`components/post-card.vue`
-  - **Acceptance**:每个 tag chip 是 link,点击 navigateTo 标签页
+- [x] **F2** post-card tag chip 点击直接跳 `/tag/<name>`
+  - **结果**:✅ 行为早在 T08 已实现(`post-card.vue` line 13-16);F2 工作 = 加 4 项 regression test 锁死(`tests/unit/post-card.spec.ts`)。stopPropagation + 跳转 + @click 绑定 + 卡片级 @click 区分。
 
 - [ ] **F3** 顶级 `category` 字段
   - **Files**:`types/index.ts`(Post 加 category)、`data/posts.ts`(全 53 篇默认 'tech')、`pages/category/category.vue`(新)、`pages.json`、`pages/index/index.vue`(顶部 tab)
