@@ -50,6 +50,18 @@ export interface ApplyMetaOptions {
 export const MANAGED_META_ATTR = 'data-managed-by-meta-tags'
 
 /**
+ * Static fallback nodes from index.html that we temporarily detach during
+ * applyMetaTags() and re-attach during clearAppliedMetaTags(). Keeping head
+ * single-source-of-truth per name/property prevents Twitter/Facebook
+ * crawlers from picking the static fallback over the dynamic managed tag
+ * (they take the first occurrence). Module-level so the stash survives
+ * across the apply/clear pair within a single page lifecycle.
+ */
+let stashedNodes: Element[] = []
+/** document.title before the most recent applyMetaTags(); restored on clear. */
+let stashedTitle: string | null = null
+
+/**
  * Site-level defaults. Edit baseUrl + defaults here when domain or
  * hero copy changes; per-post values come from the Post object.
  */
@@ -143,13 +155,36 @@ export function buildSiteMetaTags(config: SiteMetaConfig): MetaTag[] {
  * Apply meta tags to document.head. Idempotent: re-applying replaces any
  * previously-managed tag with the same name/property instead of duplicating.
  * Also sets document.title and the managed canonical link.
+ *
+ * Static fallback nodes (e.g. the og:* tags shipped in index.html) that
+ * collide with what we are about to inject are detached into a module-level
+ * stash so head carries exactly one source of truth per name/property.
+ * clearAppliedMetaTags() restores them.
  */
 export function applyMetaTags(tags: MetaTag[], opts: ApplyMetaOptions): void {
   if (typeof document === 'undefined') return
 
-  // Remove all previously managed elements first so we never leak duplicates.
+  // Remove all previously managed elements first so we never leak duplicates,
+  // and restore any previously-stashed static nodes so we re-stash a fresh
+  // snapshot below (matters for back-to-back apply calls on different posts).
   clearAppliedMetaTags()
 
+  // Stash static fallback nodes that match the incoming tags or the
+  // canonical link, so they don't co-exist with the managed nodes.
+  for (const tag of tags) {
+    const selector = tag.property
+      ? `meta[property="${cssEscape(tag.property)}"]`
+      : tag.name
+        ? `meta[name="${cssEscape(tag.name)}"]`
+        : null
+    if (!selector) continue
+    detachUnmanaged(selector)
+  }
+  detachUnmanaged('link[rel="canonical"]')
+
+  // Stash the current title so clear can restore it (non-article pages and
+  // SPA back-navigation should see the index.html <title>).
+  stashedTitle = document.title
   document.title = opts.title
 
   for (const tag of tags) {
@@ -168,9 +203,42 @@ export function applyMetaTags(tags: MetaTag[], opts: ApplyMetaOptions): void {
   document.head.appendChild(canonical)
 }
 
-/** Remove every <head> element we previously injected via applyMetaTags(). */
+/** Detach unmanaged head elements matching the selector into the stash. */
+function detachUnmanaged(selector: string): void {
+  const els = document.head.querySelectorAll(`${selector}:not([${MANAGED_META_ATTR}])`)
+  els.forEach((el) => {
+    stashedNodes.push(el)
+    el.parentNode?.removeChild(el)
+  })
+}
+
+/**
+ * Minimal CSS.escape polyfill scoped to the characters that actually appear
+ * in OG / Twitter property/name values (alphanumerics, ':', '-', '_'). We
+ * avoid pulling in CSS.escape because happy-dom in tests doesn't expose it
+ * and the input here is fully controlled by buildPostMetaTags.
+ */
+function cssEscape(value: string): string {
+  return value.replace(/["\\]/g, '\\$&')
+}
+
+/**
+ * Remove every <head> element we previously injected via applyMetaTags(),
+ * restore any static fallback nodes we had stashed, and restore the
+ * pre-apply document.title.
+ */
 export function clearAppliedMetaTags(): void {
   if (typeof document === 'undefined') return
   const managed = document.head.querySelectorAll(`[${MANAGED_META_ATTR}]`)
   managed.forEach((el) => el.parentNode?.removeChild(el))
+
+  for (const node of stashedNodes) {
+    document.head.appendChild(node)
+  }
+  stashedNodes = []
+
+  if (stashedTitle !== null) {
+    document.title = stashedTitle
+    stashedTitle = null
+  }
 }

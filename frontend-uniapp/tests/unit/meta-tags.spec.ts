@@ -244,3 +244,113 @@ describe('applyMetaTags() / clearAppliedMetaTags()', () => {
     expect(survivor).not.toBeNull()
   })
 })
+
+// Issue A: static index.html ships og:* + twitter:* + canonical fallbacks.
+// If applyMetaTags only appended new tags, head would carry two og:title
+// (one static "Personal Blog", one dynamic post title); Twitter/Facebook
+// crawlers pick the first occurrence, so the dynamic value would be
+// silently ignored. The applier must temporarily stash conflicting static
+// nodes during apply, and restore them on clear, so head always carries
+// exactly one of each name/property at a time.
+describe('applyMetaTags() — Issue A: override static fallback', () => {
+  beforeEach(() => {
+    document.head.innerHTML = ''
+    document.title = 'Personal Blog'
+  })
+
+  it('detaches static og:title before injecting the managed one', () => {
+    const fallback = document.createElement('meta')
+    fallback.setAttribute('property', 'og:title')
+    fallback.setAttribute('content', 'Personal Blog')
+    document.head.appendChild(fallback)
+
+    applyMetaTags([{ property: 'og:title', content: 'My Article' }], {
+      title: 'My Article — Personal Blog',
+      canonicalUrl: 'https://blog.multilab.cc/pages/post/post?id=42'
+    })
+
+    const all = document.head.querySelectorAll('meta[property="og:title"]')
+    expect(all.length).toBe(1)
+    expect((all[0] as HTMLMetaElement).content).toBe('My Article')
+    expect(all[0].getAttribute(MANAGED_META_ATTR)).not.toBeNull()
+  })
+
+  it('detaches static <link rel="canonical"> before injecting the managed one', () => {
+    const fallback = document.createElement('link')
+    fallback.setAttribute('rel', 'canonical')
+    fallback.setAttribute('href', 'https://blog.multilab.cc/')
+    document.head.appendChild(fallback)
+
+    applyMetaTags([], {
+      title: 'X',
+      canonicalUrl: 'https://blog.multilab.cc/pages/post/post?id=42'
+    })
+
+    const all = document.head.querySelectorAll('link[rel="canonical"]')
+    expect(all.length).toBe(1)
+    expect((all[0] as HTMLLinkElement).href).toBe(
+      'https://blog.multilab.cc/pages/post/post?id=42'
+    )
+  })
+
+  it('restores stashed static fallbacks on clearAppliedMetaTags', () => {
+    const ogTitle = document.createElement('meta')
+    ogTitle.setAttribute('property', 'og:title')
+    ogTitle.setAttribute('content', 'Personal Blog')
+    document.head.appendChild(ogTitle)
+
+    const canonical = document.createElement('link')
+    canonical.setAttribute('rel', 'canonical')
+    canonical.setAttribute('href', 'https://blog.multilab.cc/')
+    document.head.appendChild(canonical)
+
+    applyMetaTags([{ property: 'og:title', content: 'Article' }], {
+      title: 'Article — Personal Blog',
+      canonicalUrl: 'https://blog.multilab.cc/pages/post/post?id=1'
+    })
+    clearAppliedMetaTags()
+
+    const og = document.head.querySelector('meta[property="og:title"]') as HTMLMetaElement
+    expect(og?.content).toBe('Personal Blog')
+    expect(og?.getAttribute(MANAGED_META_ATTR)).toBeNull()
+
+    const link = document.head.querySelector('link[rel="canonical"]') as HTMLLinkElement
+    expect(link?.href).toBe('https://blog.multilab.cc/')
+    expect(link?.getAttribute(MANAGED_META_ATTR)).toBeNull()
+  })
+
+  it('restores document.title to its pre-apply value on clear', () => {
+    document.title = 'Personal Blog'
+    applyMetaTags([], {
+      title: 'Article — Personal Blog',
+      canonicalUrl: 'https://x/y'
+    })
+    expect(document.title).toBe('Article — Personal Blog')
+    clearAppliedMetaTags()
+    expect(document.title).toBe('Personal Blog')
+  })
+
+  it('round-trips correctly across two apply/clear cycles', () => {
+    document.title = 'Personal Blog'
+    const fallback = document.createElement('meta')
+    fallback.setAttribute('property', 'og:title')
+    fallback.setAttribute('content', 'Personal Blog')
+    document.head.appendChild(fallback)
+
+    applyMetaTags([{ property: 'og:title', content: 'A' }], {
+      title: 'A',
+      canonicalUrl: 'https://x/a'
+    })
+    clearAppliedMetaTags()
+    applyMetaTags([{ property: 'og:title', content: 'B' }], {
+      title: 'B',
+      canonicalUrl: 'https://x/b'
+    })
+    clearAppliedMetaTags()
+
+    const og = document.head.querySelector('meta[property="og:title"]') as HTMLMetaElement
+    expect(og?.content).toBe('Personal Blog')
+    expect(og?.getAttribute(MANAGED_META_ATTR)).toBeNull()
+    expect(document.title).toBe('Personal Blog')
+  })
+})
