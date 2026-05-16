@@ -36,7 +36,10 @@ describe('posts.ts data shape (F3 migration)', () => {
   })
 
   it('current corpus is all tech (legacy migration default)', () => {
-    expect(posts.length).toBeGreaterThanOrEqual(50)
+    // Floor lowered from 50 to 45 after the 2026-05-16 LearnOpenGL refresh
+    // dropped 5 articles (revision/window/gamma) by switching to the
+    // CSDNBLOG source set; remaining cushion still catches accidental wipes.
+    expect(posts.length).toBeGreaterThanOrEqual(45)
     expect(posts.every((p) => p.category === 'tech')).toBe(true)
   })
 })
