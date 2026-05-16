@@ -11,9 +11,11 @@ Add-Type -AssemblyName System.Web
 
 # 配置
 $baseSourceDir = "F:\0.学习\Note\typorafiles"
-$blogRoot = "G:\workspace\2.workProject\PersonalBlog"
-$postsDir = "$blogRoot\public\posts"
-$imagesDir = "$blogRoot\public\images"
+$blogRoot = Split-Path -Parent $PSScriptRoot
+$frontendDir = Join-Path $blogRoot 'frontend-uniapp'
+$postsDir = Join-Path $frontendDir 'static\posts'
+$imagesDir = Join-Path $frontendDir 'static\images'
+$postsDataFile = Join-Path $frontendDir 'data\posts.ts'
 
 # 检查源文件是否存在
 if (-not (Test-Path $SourceMdPath)) {
@@ -117,7 +119,7 @@ if ($localMatches.Count -gt 0) {
             $encodedBaseName = [System.Web.HttpUtility]::UrlEncode($fileBaseName).Replace('+', '%20')
             $encodedImageName = [System.Web.HttpUtility]::UrlEncode($imageName).Replace('+', '%20')
 
-            $newImagePath = "/PersonalBlog/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
+            $newImagePath = "/static/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
             $content = $content -replace [regex]::Escape($relativeImagePath), $newImagePath
         } else {
             Write-Host "  ❌ 未找到: $imageName" -ForegroundColor Red
@@ -153,11 +155,11 @@ Write-Host "✅ Markdown 文件已保存: $targetMdPath" -ForegroundColor Green
 # 生成 posts.ts 配置
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "📋 请将以下内容添加到 src/data/posts.ts:" -ForegroundColor Cyan
+Write-Host "📋 请将以下内容添加到 frontend-uniapp/data/posts.ts:" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 
 # 计算下一个 ID
-$postsTs = Get-Content "$blogRoot\src\data\posts.ts" -Raw
+$postsTs = Get-Content $postsDataFile -Raw
 $idMatches = [regex]::Matches($postsTs, "id: '(\d+)'")
 $maxId = 0
 foreach ($m in $idMatches) {
@@ -168,7 +170,7 @@ foreach ($m in $idMatches) {
 }
 $newId = $maxId + 1
 
-$mdFilePath = "/PersonalBlog/posts/$($relativePath.Replace('\', '/'))/$fileName"
+$mdFilePath = "/static/posts/$($relativePath.Replace('\', '/'))/$fileName"
 
 Write-Host ""
 Write-Host "{" -ForegroundColor White
@@ -187,6 +189,7 @@ Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "🎉 完成！接下来的步骤：" -ForegroundColor Green
 Write-Host "1. 复制图片到指定目录" -ForegroundColor Gray
-Write-Host "2. 更新 src/data/posts.ts（添加上面的配置）" -ForegroundColor Gray
-Write-Host "3. 运行 npm run dev 预览效果" -ForegroundColor Gray
-Write-Host "4. 部署: git add . && git commit -m 'docs: 添加文章' && git push && npm run deploy" -ForegroundColor Gray
+Write-Host "2. 更新 frontend-uniapp/data/posts.ts（添加上面的配置）" -ForegroundColor Gray
+Write-Host "3. 运行 node scripts/uni-run.mjs 预览效果（在 frontend-uniapp/ 目录下）" -ForegroundColor Gray
+Write-Host "4. 重新生成派生数据: node frontend-uniapp/scripts/gen-search-index.mjs && powershell -ExecutionPolicy Bypass -File scripts/gen-feeds.ps1" -ForegroundColor Gray
+Write-Host "5. 提交部署: git add . && git commit -m 'docs: 添加文章' && git push" -ForegroundColor Gray

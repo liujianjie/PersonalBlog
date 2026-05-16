@@ -16,10 +16,11 @@ Add-Type -AssemblyName System.Web
 
 # 配置
 $baseSourceDir = "F:\0.学习\Note\typorafiles"
-$blogRoot = "G:\workspace\2.workProject\PersonalBlog"
-$postsDir = "$blogRoot\public\posts"
-$imagesDir = "$blogRoot\public\images"
-$postsDataFile = "$blogRoot\src\data\posts.ts"
+$blogRoot = Split-Path -Parent $PSScriptRoot
+$frontendDir = Join-Path $blogRoot 'frontend-uniapp'
+$postsDir = Join-Path $frontendDir 'static\posts'
+$imagesDir = Join-Path $frontendDir 'static\images'
+$postsDataFile = Join-Path $frontendDir 'data\posts.ts'
 
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "批量添加文章到博客" -ForegroundColor Cyan
@@ -148,7 +149,7 @@ foreach ($file in $mdFiles) {
                 $encodedBaseName = [System.Web.HttpUtility]::UrlEncode($file.BaseName).Replace('+', '%20')
                 $encodedImageName = [System.Web.HttpUtility]::UrlEncode($imageName).Replace('+', '%20')
 
-                $newImagePath = "/PersonalBlog/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
+                $newImagePath = "/static/images/$encodedRelativePath/$encodedBaseName/$encodedImageName"
                 $content = $content -replace [regex]::Escape($relativeImagePath), $newImagePath
             }
         }
@@ -166,7 +167,7 @@ foreach ($file in $mdFiles) {
     $maxId++
     $newId = $maxId
     $fileBaseName = $file.BaseName
-    $mdFilePath = "/PersonalBlog/posts/$($relativePath.Replace('\', '/'))/$($file.Name)"
+    $mdFilePath = "/static/posts/$($relativePath.Replace('\', '/'))/$($file.Name)"
 
     $config = @{
         id = $newId
@@ -191,7 +192,7 @@ Write-Host "  - ID 范围: $(($allConfigs | Select-Object -First 1).id) ~ $(($al
 Write-Host ""
 
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "📋 请将以下内容添加到 src/data/posts.ts:" -ForegroundColor Yellow
+Write-Host "📋 请将以下内容添加到 frontend-uniapp/data/posts.ts:" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -213,8 +214,9 @@ Write-Host ""
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "🎯 后续步骤:" -ForegroundColor Yellow
 Write-Host "=====================================" -ForegroundColor Cyan
-Write-Host "1. 复制上面的配置到 src/data/posts.ts" -ForegroundColor Gray
+Write-Host "1. 复制上面的配置到 frontend-uniapp/data/posts.ts" -ForegroundColor Gray
 Write-Host "2. 根据实际情况修改 excerpt、tags、readTime" -ForegroundColor Gray
-Write-Host "3. 运行 npm run dev 预览效果" -ForegroundColor Gray
-Write-Host "4. 提交部署: git add . && git commit && git push && npm run deploy" -ForegroundColor Gray
+Write-Host "3. 在 frontend-uniapp/ 下运行 node scripts/uni-run.mjs 预览效果" -ForegroundColor Gray
+Write-Host "4. 重新生成派生数据: node frontend-uniapp/scripts/gen-search-index.mjs && powershell -ExecutionPolicy Bypass -File scripts/gen-feeds.ps1" -ForegroundColor Gray
+Write-Host "5. 提交部署: git add . && git commit && git push" -ForegroundColor Gray
 Write-Host ""
