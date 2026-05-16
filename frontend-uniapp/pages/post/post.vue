@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onUnload } from '@dcloudio/uni-app'
 import SiteHeader from '@/components/site-header.vue'
 import GiscusComments from '@/components/giscus-comments.vue'
 import { posts } from '@/data/posts'
 import { renderMarkdown } from '@/composables/markdown'
+import {
+  applyMetaTags,
+  buildPostMetaTags,
+  buildPostUrl,
+  clearAppliedMetaTags,
+  siteMetaConfig
+} from '@/composables/meta-tags'
 import type { Post } from '@/types'
 
 const post = ref<Post | null>(null)
@@ -28,7 +35,15 @@ onLoad((options) => {
     return
   }
   post.value = found
+  applyMetaTags(buildPostMetaTags(found, siteMetaConfig), {
+    title: `${found.title} — ${siteMetaConfig.siteName}`,
+    canonicalUrl: buildPostUrl(found.id, siteMetaConfig.baseUrl)
+  })
   void loadContent(found)
+})
+
+onUnload(() => {
+  clearAppliedMetaTags()
 })
 
 async function loadContent(p: Post) {

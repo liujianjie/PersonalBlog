@@ -7,6 +7,28 @@
     <meta name="theme-color" content="#2563eb" />
     <meta name="application-name" content="Personal Blog" />
     <meta name="description" content="技术笔记 · Unity / OpenGL / 计算机基础" />
+
+    <!-- F9 (SPEC §13.7 P3): static OG / Twitter Card / canonical fallback.
+         Headless social crawlers (微信 / Twitter / Discord / Slack / Telegram)
+         do NOT execute JS, so they only see this HTML shell. post.vue
+         overrides these at runtime for JS-capable crawlers via
+         composables/meta-tags.ts. og:image must be an absolute URL —
+         owner needs to upload a 1200x630 PNG to static/images/og-default.png
+         (or change the path here to a hosted image) for cards to render
+         with a hero image; until then, social platforms fall back to a
+         no-image card. -->
+    <link rel="canonical" href="https://blog.multilab.cc/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Personal Blog" />
+    <meta property="og:description" content="技术笔记 · Unity / OpenGL / 计算机基础" />
+    <meta property="og:url" content="https://blog.multilab.cc/" />
+    <meta property="og:image" content="https://blog.multilab.cc/static/images/og-default.png" />
+    <meta property="og:site_name" content="Personal Blog" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Personal Blog" />
+    <meta name="twitter:description" content="技术笔记 · Unity / OpenGL / 计算机基础" />
+    <meta name="twitter:image" content="https://blog.multilab.cc/static/images/og-default.png" />
   </head>
   <body>
     <div id="app"></div>
