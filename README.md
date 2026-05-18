@@ -18,6 +18,8 @@
 
 一个 uni-app(Vue 3) H5 个人博客,自托管在 `blog.multilab.cc`(本机 Caddy + Cloudflare Tunnel)。
 
+访问地址：https://liujianjie.github.io/PersonalBlog/
+
 ## 特性
 
 - 50+ 篇技术文章(Unity / OpenGL / Addressable / ProtoBuf 等)
